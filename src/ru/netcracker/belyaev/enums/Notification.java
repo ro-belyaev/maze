@@ -1,0 +1,14 @@
+package ru.netcracker.belyaev.enums;
+
+public enum Notification {
+	HAVE_NO_TREASURE,
+	NO_SUCH_TREASURE,
+	NO_MAGE,
+	NO_EXIT,
+	NO_BULLET,
+	ALREADY_HAS_TREASURE,
+	NOT_YOUR_MOVE,
+	BOARD_IS_ALREADY_CREATED,
+	BOARD_IS_NOT_CREATED,
+	BOARD_GENERATION
+}
