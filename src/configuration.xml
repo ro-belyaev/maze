@@ -1,0 +1,33 @@
+<configuration>
+	<boardElement type='river' count='6' generation='manual'>
+		<element pointX='1' pointY='3' step='1' />
+		<element pointX='2' pointY='3' step='2' />
+		<element pointX='3' pointY='3' step='1' />
+		<element pointX='3' pointY='4' step='1' />
+		<element pointX='4' pointY='4' step='1' />
+	</boardElement>
+	<boardElement type='wall' count='1' generation='manual'>
+		<element pointX='2' pointY='0' />
+	</boardElement>
+	<boardElement type='player' count='3' generation='manual'>
+		<element pointX='1' pointY='0' name='Roman' />
+		<element pointX='4' pointY='3' name='Lob' />
+		<element pointX='1' pointY='2' name='Karo' />
+	</boardElement>
+	<boardElement type='treasure' count='2' generation='manual'>
+		<element pointX='2' pointY='1' real='true' />
+		<element pointX='4' pointY='1' real='false' />
+	</boardElement>
+	<boardElement type='mage' count='1' generation='manual'>
+		<element pointX='3' pointY='0' />
+	</boardElement>
+	<boardElement type='arch' count='1' generation='manual'>
+		<element pointX='3' pointY='2' />
+	</boardElement>
+	<boardElement type='exit' count='1' generation='manual'>
+		<element pointX='4' pointY='0' />
+	</boardElement>
+	<boardElement type='boardSize' count='1' generation='manual'>
+		<element pointX='5' pointY='5' />
+	</boardElement>
+</configuration>

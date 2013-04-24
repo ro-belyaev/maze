@@ -1,6 +1,7 @@
 package ru.netcracker.belyaev.model.models;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -182,7 +183,10 @@ public class BoardGeneration {
 		DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
 		domFactory.setNamespaceAware(true);
 		DocumentBuilder builder = domFactory.newDocumentBuilder();
-		Document doc = builder.parse("configuration.xml");
+		Document doc = builder.parse("C:/Users/Roman/study/NetCracker/projects/maze_web/src/configuration.xml");
+		
+//		InputStream xml = BoardGeneration.class.getResourceAsStream("C:/Users/Roman/study/NetCracker/projects/maze_web/src/configuration.xml");
+//		Document doc = builder.parse(xml);
 		
 		XPathFactory factory = XPathFactory.newInstance();
 		XPath xpath = factory.newXPath();

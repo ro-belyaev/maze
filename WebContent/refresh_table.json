@@ -1,0 +1,40 @@
+{
+    "players": [
+        {
+            "id": 0,
+            "moves": [
+                {
+                    "move_id": 0,
+                    "action": "take treasure",
+                    "result": "Roman takes treasure"
+                },
+                {
+                    "move_id": 1,
+                    "action": "drop treasure",
+                    "result": "Roman drops treasure"
+                }
+            ]
+        },
+        {
+            "id": 1,
+            "moves": [
+                {
+                    "move_id": 0,
+                    "action": "go left",
+                    "result": "Lob goes left. Lob goes to river. Moved 1 cell up"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "moves": [
+                {
+                    "move_id": 0,
+                    "action": "shoots down",
+                    "result": "miss =("
+                }
+            ]
+        }
+    ],
+    "moves_count": 4
+}

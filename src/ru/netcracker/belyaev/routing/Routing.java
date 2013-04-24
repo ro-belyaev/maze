@@ -15,6 +15,19 @@ import ru.netcracker.belyaev.view.View;
 public class Routing {
 //	private static Logger log = Logger.getLogger(Routing.class.getName());
 	private Controller controller;
+	
+	private MainModel model;
+	private View view;
+	public Routing() {
+		model = new MainModel();
+		view = new ConsoleView();
+		controller = new Controller(model, view);
+		model.setController(controller);
+		view.setController(controller);		
+		this.setController(controller);
+
+	}
+	
 	public void setController(Controller controller) {
 		this.controller = controller;
 	}
