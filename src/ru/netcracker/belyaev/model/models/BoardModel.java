@@ -10,11 +10,12 @@ import javax.xml.xpath.XPathExpressionException;
 import org.xml.sax.SAXException;
 
 import ru.netcracker.belyaev.controller.OneCellOnBoard;
-import ru.netcracker.belyaev.customExceptions.ElementOnWallException;
 import ru.netcracker.belyaev.customExceptions.NoBoardSizeException;
 import ru.netcracker.belyaev.customExceptions.NoExitException;
+import ru.netcracker.belyaev.customExceptions.NotAdjoiningWallPoints;
 import ru.netcracker.belyaev.customExceptions.OutOfBoardException;
 import ru.netcracker.belyaev.customExceptions.RiverException;
+import ru.netcracker.belyaev.customExceptions.RiverFlowsThroughWallException;
 import ru.netcracker.belyaev.customExceptions.TooLessPlayersException;
 import ru.netcracker.belyaev.customExceptions.TooManyTreasuresException;
 import ru.netcracker.belyaev.customExceptions.WrongBoardSizeException;
@@ -41,7 +42,7 @@ public class BoardModel {
 		return snapshot;
 	}
 	
-	public void generateBoard() {
+	public void generateBoard()  {
 		if(Board.getInstance().isBoardCreated()) {
 			messenger.notifyUser(Notification.BOARD_IS_ALREADY_CREATED);
 			return;
@@ -71,16 +72,16 @@ public class BoardModel {
 			System.out.println("io exception while creating the game");
 			dropBoard();
 //			log.info("failed!", e);
-		} catch (ElementOnWallException e) {
-			System.out.println("some element is on wall in initial game setup");
-			dropBoard();
-//			log.info("failed!", e);
-		} catch (NoExitException e) {
+		}  catch (NoExitException e) {
 			System.out.println("you should specify at least one exit point on map");
 			dropBoard();
 //			log.info("failed!", e);
 		} catch (OutOfBoardException e) {
 			System.out.println("some element in initial game setup is out of board");
+			dropBoard();
+//			log.info("failed!", e);
+		} catch(NotAdjoiningWallPoints e) {
+			System.out.println("you should specify adjoining points, beetween that will be a wall");
 			dropBoard();
 //			log.info("failed!", e);
 		} catch (RiverException e) {
@@ -106,6 +107,10 @@ public class BoardModel {
 //			log.info("failed!", e);
 		} catch (NoBoardSizeException e) {
 			System.out.println("you didn't specify board size");
+			dropBoard();
+//			log.info("failed!", e);
+		} catch (RiverFlowsThroughWallException e) {
+			System.out.println("you put a wall on the river!");
 			dropBoard();
 //			log.info("failed!", e);
 		} 

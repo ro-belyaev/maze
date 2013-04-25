@@ -9,11 +9,12 @@ import javax.xml.xpath.XPathExpressionException;
 import org.xml.sax.SAXException;
 
 import ru.netcracker.belyaev.controller.OneCellOnBoard;
-import ru.netcracker.belyaev.customExceptions.ElementOnWallException;
 import ru.netcracker.belyaev.customExceptions.NoBoardSizeException;
 import ru.netcracker.belyaev.customExceptions.NoExitException;
+import ru.netcracker.belyaev.customExceptions.NotAdjoiningWallPoints;
 import ru.netcracker.belyaev.customExceptions.OutOfBoardException;
 import ru.netcracker.belyaev.customExceptions.RiverException;
+import ru.netcracker.belyaev.customExceptions.RiverFlowsThroughWallException;
 import ru.netcracker.belyaev.customExceptions.TooLessPlayersException;
 import ru.netcracker.belyaev.customExceptions.TooManyTreasuresException;
 import ru.netcracker.belyaev.customExceptions.WrongBoardSizeException;
@@ -70,7 +71,7 @@ public class Board {
 		}
 	}
 	
-	public void generateBoard() throws XPathExpressionException, ParserConfigurationException, SAXException, IOException, TooManyTreasuresException, RiverException, TooLessPlayersException, NoExitException, OutOfBoardException, ElementOnWallException, NoBoardSizeException, WrongBoardSizeException {
+	public void generateBoard() throws XPathExpressionException, ParserConfigurationException, SAXException, IOException, TooManyTreasuresException, RiverException, TooLessPlayersException, NoExitException, OutOfBoardException, NoBoardSizeException, WrongBoardSizeException, NotAdjoiningWallPoints, RiverFlowsThroughWallException {
 		BoardGeneration.generate();
 		this.isBoardCreated = true;
 		boardSnapshot = new BoardSnapshot(sizeX, sizeY);

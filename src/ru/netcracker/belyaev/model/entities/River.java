@@ -9,28 +9,6 @@ import java.util.List;
 import ru.netcracker.belyaev.enums.Direction;
 
 public class River {
-	
-	public class Portal {
-		private OnePointOnMap startPoint;
-		private OnePointOnMap destinationPoint;
-		private int step;
-		public Portal(OnePointOnMap startPoint, OnePointOnMap destinationPoint, int step) {
-			this.startPoint = startPoint;
-			this.destinationPoint = destinationPoint;
-			this.step = step;
-		}
-		public OnePointOnMap getStartPoint() {
-			return this.startPoint;
-		}
-		public OnePointOnMap getDestinationPoint() {
-			return this.destinationPoint;
-		}
-		public int getStep() {
-			return step;
-		}
-	}
-
-
 	private List<Portal> trace;
 	private int size;
 	

@@ -7,12 +7,18 @@
 		<element pointX='4' pointY='4' step='1' />
 	</boardElement>
 	<boardElement type='wall' count='1' generation='manual'>
-		<element pointX='2' pointY='0' />
+		<element pointX='1' pointY='1' />
+		<element pointX='2' pointY='1' />
 	</boardElement>
+	<boardElement type='wall' count='1' generation='manual'>
+		<element pointX='0' pointY='0' />
+		<element pointX='0' pointY='1' />
+	</boardElement>
+	
 	<boardElement type='player' count='3' generation='manual'>
-		<element pointX='1' pointY='0' name='Roman' />
+		<element pointX='1' pointY='1' name='Roman' />
 		<element pointX='4' pointY='3' name='Lob' />
-		<element pointX='1' pointY='2' name='Karo' />
+		<element pointX='2' pointY='1' name='Karo' />
 	</boardElement>
 	<boardElement type='treasure' count='2' generation='manual'>
 		<element pointX='2' pointY='1' real='true' />

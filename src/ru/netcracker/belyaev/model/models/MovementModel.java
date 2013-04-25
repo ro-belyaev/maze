@@ -24,7 +24,7 @@ public class MovementModel {
 		OnePointOnMap destination = currentPosition.nextPoint(direction);
 		messenger.informAboutAction(GameCases.GO, currentPosition, destination, player);
 		Wall wall = Board.getInstance().getWall();
-		if(wall != null && wall.checkIfPointIsPartOfWall(destination)) {
+		if(wall != null && wall.isWallBetweenTwoPointsOnOneLine(currentPosition, destination)) {
 			messenger.informAboutAction(GameCases.INSIDE_WALL, currentPosition, destination, player);
 		}
 		else if(Board.getInstance().isOutside(destination)) {

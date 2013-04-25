@@ -29,12 +29,12 @@ public class ShootModel {
 			messenger.informAboutAction(GameCases.SHOT, currentPlayerPosition, currentPlayerPosition.nextPoint(direction), currentPlayer);
 			List<OnePointOnMap> positionOfCompetitors = getCompetitorsPosition();
 			List<OnePointOnMap> possibleVictimsPoints = currentPlayerPosition
-					.getPointsOnOneLine(positionOfCompetitors, direction);
+					.getPointsOnOneDirection(positionOfCompetitors, direction);
 			OnePointOnMap nearestPossibleVictimsPosition = currentPlayerPosition
-					.getNearestPointInLine(possibleVictimsPoints, direction);
+					.getNearestPointInDirection(possibleVictimsPoints, direction);
 			Wall wall = Board.getInstance().getWall();
 			if(nearestPossibleVictimsPosition != null && 
-					(wall == null || !wall.isWallBetweenTwoPoints(currentPlayerPosition, nearestPossibleVictimsPosition))) {
+					(wall == null || !wall.isWallBetweenTwoPointsOnOneLine(currentPlayerPosition, nearestPossibleVictimsPosition))) {
 				List<Player> victims = getCompetitorsOnThisPoint(nearestPossibleVictimsPosition);
 				int victimItem = new Random().nextInt(victims.size());
 				Player victim = victims.get(victimItem);

@@ -13,7 +13,8 @@ import ru.netcracker.belyaev.model.entities.Player;
 import ru.netcracker.belyaev.model.entities.River;
 import ru.netcracker.belyaev.model.entities.Treasure;
 import ru.netcracker.belyaev.model.entities.Wall;
-import ru.netcracker.belyaev.model.entities.River.Portal;
+//import ru.netcracker.belyaev.model.entities.River;
+import ru.netcracker.belyaev.model.entities.Portal;
 
 public class BoardSnapshot {
 	int sizeX;
@@ -86,10 +87,15 @@ public class BoardSnapshot {
 		}
 	}
 	public void generateWallSnapshot(Wall wall) {
-		for(OnePointOnMap point : wall.getWall()) {
-			int x = point.getX();
-			int y = point.getY();
-			snapshot[y][x].setWall();
+		for(Portal wallPart: wall.getWall()) {
+			OnePointOnMap firstPoint = wallPart.getStartPoint();
+			OnePointOnMap secondPoint = wallPart.getDestinationPoint();
+			int x1 = firstPoint.getX();
+			int y1 = firstPoint.getY();
+			int x2 = secondPoint.getX();
+			int y2 = secondPoint.getY();
+			snapshot[y1][x1].setWall();
+			snapshot[y2][x2].setWall();
 		}
 	}
 	public void generateArchSnapshot(Arch arch) {

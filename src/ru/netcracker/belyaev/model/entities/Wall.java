@@ -3,74 +3,67 @@ package ru.netcracker.belyaev.model.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.netcracker.belyaev.enums.Direction;
+
 public class Wall {
-	private List<OnePointOnMap> wall;
+	private List<Portal> wall;
 	private int size;
 	
 	public Wall() {
 		this.wall = new ArrayList<>();
 	}
-	public boolean checkIfPointIsPartOfWall(OnePointOnMap somePoint) {
-		for(OnePointOnMap point : wall) {
-			if((point.getX() == somePoint.getX()) 
-					&& (point.getY() == somePoint.getY())) {
+
+	public boolean suchWallIsAlreadyExists(Portal someWall) {
+		for(Portal realWall : wall) {
+			if(realWall.equals(someWall) || realWall.equals(Portal.reversePortal(someWall))) {
 				return true;
 			}
 		}
 		return false;
 	}
-	public List<OnePointOnMap> getWall() {
+	
+	public List<Portal> getWall() {
 		return wall;
 	}
-	public void addPoint(OnePointOnMap somePoint) {
-		if(!checkIfPointIsPartOfWall(somePoint)) {
-			wall.add(somePoint);
-			size++;
+	
+	public boolean addWall(OnePointOnMap firstPoint, OnePointOnMap secondPoint) {
+		if(firstPoint.adjoiningPoint(secondPoint)) {
+			Portal newWall = new Portal(firstPoint, secondPoint, 0);
+			if(!suchWallIsAlreadyExists(newWall)) {
+				wall.add(newWall);
+				size++;
+			}
+			return true;
+		} else {
+			return false;
 		}
 	}
-	public void removePoint(OnePointOnMap somePoint) {
-		wall.remove(somePoint);
-	}
+
 	public int size() {
 		return this.size;
 	}
 	
-//	TODO test this function
-	public boolean isWallBetweenTwoPoints(OnePointOnMap firstPoint, OnePointOnMap secondPoint) {
-		if(firstPoint.getX() != secondPoint.getX() && firstPoint.getY() != secondPoint.getY()) {
+	public boolean isWallBetweenTwoPointsOnOneLine(OnePointOnMap firstPoint, OnePointOnMap lastPoint) {
+		if(firstPoint.equals(lastPoint)) {
+			return false;
+		} else if(!firstPoint.isPointOnOneLine(lastPoint)) {
+			return false;
+		} else {
+			Direction direction = ru.netcracker.belyaev.enums.Direction.recognizeDirection(firstPoint, lastPoint);
+			OnePointOnMap somePoint = firstPoint;
+			do {
+				OnePointOnMap nextPoint = somePoint.nextPoint(direction);
+				if(isWallBetweenTwoAdjoiningPoints(somePoint, nextPoint)) {
+					return true;
+				}
+				somePoint = nextPoint;
+			} while(!somePoint.equals(lastPoint));
 			return false;
 		}
-		else if(firstPoint.equals(secondPoint) || firstPoint.adjoiningPoint(secondPoint)) {
-			return false;
-		}
-		else {
-			for(OnePointOnMap wallPoint : wall) {
-				if(firstPoint.getY() - secondPoint.getY() > 0) { //second point is below
-					if(wallPoint.getX() == firstPoint.getX() && wallPoint.getY() > secondPoint.getY() && 
-							wallPoint.getY() < firstPoint.getY()) {
-						return true;
-					}
-				}
-				else if(firstPoint.getY() - secondPoint.getY() < 0) { //second point is above
-					if(wallPoint.getX() == firstPoint.getX() && wallPoint.getY() < secondPoint.getY() &&
-							wallPoint.getY() > firstPoint.getY()) {
-						return true;
-					}
-				}
-				else if(firstPoint.getX() - secondPoint.getX() > 0) { //second point is left
-					if(wallPoint.getY() == firstPoint.getY() && wallPoint.getX() > secondPoint.getX() &&
-							wallPoint.getX() < firstPoint.getX()) {
-						return true;
-					}
-				}
-				else if(firstPoint.getX() - secondPoint.getX() < 0) { //second point is right
-					if(wallPoint.getY() == firstPoint.getY() && wallPoint.getX() < secondPoint.getX() && 
-							wallPoint.getX() > firstPoint.getX()) {
-						return true;
-					}
-				}
-			}
-			return false;
-		}
+	}
+	
+	private boolean isWallBetweenTwoAdjoiningPoints(OnePointOnMap firstPoint, OnePointOnMap secondPoint) {
+		Portal someWall = new Portal(firstPoint, secondPoint, 0);
+		return suchWallIsAlreadyExists(someWall);
 	}
 }

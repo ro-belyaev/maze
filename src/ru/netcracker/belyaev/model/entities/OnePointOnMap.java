@@ -65,7 +65,7 @@ public class OnePointOnMap {
 		return false;
 	}
 	
-	public List<OnePointOnMap> getPointsOnOneLine(List<OnePointOnMap> allPoints, Direction direction) {
+	public List<OnePointOnMap> getPointsOnOneDirection(List<OnePointOnMap> allPoints, Direction direction) {
 		List<OnePointOnMap> returnList = new ArrayList<>();
 		for(OnePointOnMap somePoint : allPoints) {
 			switch (direction) {
@@ -94,7 +94,7 @@ public class OnePointOnMap {
 		return returnList;
 	}
 	
-	public OnePointOnMap getNearestPointInLine(List<OnePointOnMap> line, Direction direction) {
+	public OnePointOnMap getNearestPointInDirection(List<OnePointOnMap> line, Direction direction) {
 		OnePointOnMap closest = null;
 		for(OnePointOnMap somePoint : line) {
 			if(closest == null) {
@@ -130,5 +130,13 @@ public class OnePointOnMap {
 			}
 		}
 		return closest;
+	}
+	
+	public boolean isPointOnOneLine(OnePointOnMap somePoint) {
+		if(this.x == somePoint.getX() || this.y == somePoint.getY()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
