@@ -20,11 +20,13 @@ public class BoardSnapshot {
 	int sizeX;
 	int sizeY;
 	OneCellOnBoard[][] snapshot;
+	private Game game;
 	
-	public BoardSnapshot(int sizeX, int sizeY) {
+	public BoardSnapshot(int sizeX, int sizeY, Game game) {
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
 		this.snapshot = new OneCellOnBoard[sizeY][sizeX];
+		this.game = game;
 		resetBoardSnapshot();
 	}
 	
@@ -41,17 +43,17 @@ public class BoardSnapshot {
 	}
 	
 	public void generateBoardSnapshot() {
-		if(!Board.getInstance().isBoardCreated()) {
+		if(!game.getBoard().isBoardCreated()) {
 			return;
 		}
 		
-		River river = Board.getInstance().getRiver();
-		Wall wall = Board.getInstance().getWall();
-		Arch arch = Board.getInstance().getArch();
-		Mage mage = Board.getInstance().getMage();
-		Exit exit = Board.getInstance().getExit();
-		List<Treasure> treasure = Board.getInstance().getTreasure();
-		List<Player> players = Board.getInstance().getPlayers();
+		River river = game.getBoard().getRiver();
+		Wall wall = game.getBoard().getWall();
+		Arch arch = game.getBoard().getArch();
+		Mage mage = game.getBoard().getMage();
+		Exit exit = game.getBoard().getExit();
+		List<Treasure> treasure = game.getBoard().getTreasure();
+		List<Player> players = game.getBoard().getPlayers();
 		
 		if(river != null) {
 			generateRiverSnapshot(river);
@@ -87,7 +89,7 @@ public class BoardSnapshot {
 		}
 	}
 	public void generateWallSnapshot(Wall wall) {
-		for(Portal wallPart: wall.getWall()) {
+		for(Portal wallPart: wall.getPortals()) {
 			OnePointOnMap firstPoint = wallPart.getStartPoint();
 			OnePointOnMap secondPoint = wallPart.getDestinationPoint();
 			int x1 = firstPoint.getX();

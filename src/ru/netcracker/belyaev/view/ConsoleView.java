@@ -257,6 +257,15 @@ public class ConsoleView extends View {
 			case BOARD_IS_NOT_CREATED:
 				System.out.println("You should generate board first");
 				break;
+			case GAME_IS_OVER:
+				System.out.println("Game is already over");
+				break;
+			case GAME_IS_TERMINATED:
+				System.out.println("Game is terminated");
+				break;
+			case GAME_IS_ALREADY_TERMINATED:
+				System.out.println("This game is already terminated");
+				break;
 			case NOT_YOUR_MOVE:
 				System.out.println("This is not your move now");
 				break;
@@ -266,6 +275,8 @@ public class ConsoleView extends View {
 			case NO_BULLET:
 				System.out.println("You haven't bullets");
 				break;
+		default:
+			break;
 		}
 	}
 	

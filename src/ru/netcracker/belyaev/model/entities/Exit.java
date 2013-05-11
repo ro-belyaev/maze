@@ -3,7 +3,7 @@ package ru.netcracker.belyaev.model.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Exit {
+public class Exit implements SimpleEntity {
 	private List<OnePointOnMap> position;
 	private int numOfExit;
 	public Exit() {
@@ -24,5 +24,17 @@ public class Exit {
 	}
 	public int size() {
 		return this.numOfExit;
+	}
+
+	@Override
+	public List<OnePointOnMap> getEntity() {
+		return this.getExit();
+	}
+
+	@Override
+	public void setEntity(List<OnePointOnMap> points) {
+		for(OnePointOnMap point : points) {
+			this.addExit(point);
+		}
 	}
 }

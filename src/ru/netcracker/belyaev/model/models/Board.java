@@ -18,6 +18,7 @@ import ru.netcracker.belyaev.customExceptions.RiverFlowsThroughWallException;
 import ru.netcracker.belyaev.customExceptions.TooLessPlayersException;
 import ru.netcracker.belyaev.customExceptions.TooManyTreasuresException;
 import ru.netcracker.belyaev.customExceptions.WrongBoardSizeException;
+import ru.netcracker.belyaev.database.api.DatabaseManagerFactory;
 import ru.netcracker.belyaev.model.entities.Arch;
 import ru.netcracker.belyaev.model.entities.Exit;
 import ru.netcracker.belyaev.model.entities.Mage;
@@ -29,7 +30,7 @@ import ru.netcracker.belyaev.model.entities.Wall;
 
 
 public class Board {
-	private static volatile Board boardInstance;
+//	private static volatile Board boardInstance;
 	
 	private boolean isBoardCreated = false;
 	
@@ -45,21 +46,24 @@ public class Board {
 	private List<Treasure> treasure;
 	private int numOfPlayers = 0;
 	private int numOfTreasures = 0;
+	private Game game;
 	
 	BoardSnapshot boardSnapshot;
 	
-	private Board() {}
-	
-	public static Board getInstance() {
-		if(boardInstance == null) {
-			synchronized(Board.class) {
-				if(boardInstance == null) {
-					boardInstance = new Board();
-				}
-			}
-		}
-		return boardInstance;
+	public Board(Game game) {
+		this.game = game;
 	}
+	
+//	public static Board getInstance() {
+//		if(boardInstance == null) {
+//			synchronized(Board.class) {
+//				if(boardInstance == null) {
+//					boardInstance = new Board();
+//				}
+//			}
+//		}
+//		return boardInstance;
+//	}
 	public OneCellOnBoard[][] getBoardSnapshot() {
 		if(boardSnapshot == null) {
 			return null;
@@ -72,16 +76,23 @@ public class Board {
 	}
 	
 	public void generateBoard() throws XPathExpressionException, ParserConfigurationException, SAXException, IOException, TooManyTreasuresException, RiverException, TooLessPlayersException, NoExitException, OutOfBoardException, NoBoardSizeException, WrongBoardSizeException, NotAdjoiningWallPoints, RiverFlowsThroughWallException {
-		BoardGeneration.generate();
+		BoardGeneration.generate(this);
 		this.isBoardCreated = true;
-		boardSnapshot = new BoardSnapshot(sizeX, sizeY);
+		boardSnapshot = new BoardSnapshot(sizeX, sizeY, game);
+	}
+	public boolean restoreBoard() {
+		if(DatabaseManagerFactory.getDatabaseManagerInstance().restoreGameState(game)) {
+			this.isBoardCreated = true;
+			boardSnapshot = new BoardSnapshot(sizeX, sizeY, game);
+			return true;
+		} else {
+			return false;
+		}
 	}
 	public boolean isBoardCreated() {
 		return this.isBoardCreated;
 	}
-	public void createBoard() {
-		this.isBoardCreated = true;
-	}
+
 	public void dropBoard() {
 		this.isBoardCreated = false;
 		this.sizeX = this.sizeY = this.numOfPlayers = this.numOfTreasures = 0;
@@ -186,5 +197,8 @@ public class Board {
 	}
 	public int getMaxSizeY() {
 		return this.maxSizeY;
+	}
+	public Game getGame() {
+		return this.game;
 	}
 }

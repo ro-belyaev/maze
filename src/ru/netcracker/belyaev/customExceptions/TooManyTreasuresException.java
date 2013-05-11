@@ -12,8 +12,8 @@ public class TooManyTreasuresException extends Exception {
 		super();
 	}
 	
-	public static void check() throws TooManyTreasuresException {
-		if(Board.getInstance().getNumOfTreasures() > Colors.values().length) {
+	public static void check(Board board) throws TooManyTreasuresException {
+		if(board.getNumOfTreasures() > Colors.values().length) {
 			throw new TooManyTreasuresException();
 		}
 	}

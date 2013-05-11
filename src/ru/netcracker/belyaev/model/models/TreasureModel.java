@@ -4,6 +4,7 @@ import java.util.List;
 
 import ru.netcracker.belyaev.enums.GameCases;
 import ru.netcracker.belyaev.enums.Notification;
+import ru.netcracker.belyaev.enums.PlayerActions;
 import ru.netcracker.belyaev.model.entities.Player;
 import ru.netcracker.belyaev.model.entities.Treasure;
 
@@ -24,7 +25,7 @@ public class TreasureModel {
 			messenger.notifyUser(Notification.ALREADY_HAS_TREASURE);
 		}
 		else {
-			Treasure treasure = getTreasureByColorID(colorID);
+			Treasure treasure = getTreasureByColorID(colorID, this.game);
 			if(treasure == null) {
 				messenger.notifyUser(Notification.NO_SUCH_TREASURE);
 			}
@@ -34,6 +35,8 @@ public class TreasureModel {
 			else {
 				player.takeTreasure(treasure);
 				messenger.informAboutAction(GameCases.UP_TREASURE, player.getPosition(), player, treasure.getColorID());
+				game.setLastPlayerAction(PlayerActions.TAKE_TREASURE);
+				game.setDirectionOfLastPlayerAction(null);
 				game.newMove();
 			}
 		}
@@ -48,12 +51,13 @@ public class TreasureModel {
 			Treasure treasure = player.getTreasure();
 			player.dropTreasure();
 			messenger.informAboutAction(GameCases.DROP_TREASURE, player.getPosition(), player, treasure.getColorID());
+			game.setLastPlayerAction(PlayerActions.DROP_TREASURE);
 			game.newMove();
 		}
 	}
 	
-	public static Treasure getTreasureByColorID(int colorID) {
-		List<Treasure> treasure = Board.getInstance().getTreasure();
+	public static Treasure getTreasureByColorID(int colorID, Game game) {
+		List<Treasure> treasure = game.getBoard().getTreasure();
 		if(treasure == null) {
 			return null;
 		}

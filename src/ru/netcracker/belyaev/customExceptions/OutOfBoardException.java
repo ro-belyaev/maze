@@ -13,8 +13,8 @@ public class OutOfBoardException extends Exception {
 		super();
 	}
 	
-	public static void check(OnePointOnMap point) throws OutOfBoardException {
-		if(Board.getInstance().isOutside(point)) {
+	public static void check(OnePointOnMap point, Board board) throws OutOfBoardException {
+		if(board.isOutside(point)) {
 			throw new OutOfBoardException();
 		}
 	}

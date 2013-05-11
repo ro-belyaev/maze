@@ -1,6 +1,7 @@
 package ru.netcracker.belyaev.model.models;
 
 import ru.netcracker.belyaev.controller.*;
+import ru.netcracker.belyaev.database.api.DatabaseManagerFactory;
 import ru.netcracker.belyaev.enums.Direction;
 
 public class MainModel {
@@ -36,71 +37,93 @@ public class MainModel {
 		this.move.setGame(game);
 	}
 	
+	
+	public void dropGameState() {
+		this.game.resetGame();
+		this.game.getBoard().dropBoard();
+	}
+	
+	public boolean moveShouldBeContinued(int uid) {
+//		load state here
+		if(game.getBoard().restoreBoard()) {
+			if(!game.checkCouldPlayerMakeMove(uid)) {
+				return false;
+			} else {
+				return true;
+			}
+		} else {
+//			game isn't started or is terminated
+			return false;
+		}
+	}
+	
 
 	
 	public void go(int uid, Direction direction) {
-		if(!game.checkCouldPlayerMakeMove(uid)) {
-			return;
-		}
-		else {
+		if(moveShouldBeContinued(uid)) {
 			movement.go(direction);
 		}
+		dropGameState();
 	}
 		
 	public void upTreasure(int uid, int colorID) {
-		if(!game.checkCouldPlayerMakeMove(uid)) {
-			return;
-		}
-		else {
+		if(moveShouldBeContinued(uid)) {
 			treasure.upTreasure(colorID);
 		}
+		dropGameState();
 	}
 	
 	public void dropTreasure(int uid) {
-		if(!game.checkCouldPlayerMakeMove(uid)) {
-			return;
-		}
-		else {
+		if(moveShouldBeContinued(uid)) {
 			treasure.dropTreasure();
 		}
+		dropGameState();
 	}
 	
 	public void askPrediction(int uid) {
-		if(!game.checkCouldPlayerMakeMove(uid)) {
-			return;
-		}
-		else {
+		if(moveShouldBeContinued(uid)) {
 			mage.askPrediction();
 		}
+		dropGameState();
 	}
 	
 	public void exit(int uid) {
-		if(!game.checkCouldPlayerMakeMove(uid)) {
-			return;
-		}
-		else {
+		if(moveShouldBeContinued(uid)) {
 			exit.exit();
 		}
+		dropGameState();
 	}
 	
 	public void shoot(int uid, Direction direction) {
-		if(!game.checkCouldPlayerMakeMove(uid)) {
-			return;
-		}
-		else {
+		if(moveShouldBeContinued(uid)) {
 			weapon.shoot(direction);
 		}
+		dropGameState();
 	}
 	
 	public OneCellOnBoard[][] getBoardSnapshot() {
-		return board.getBoardSnapshot();
+//		load state here
+//		drop game state in controller
+		if(game.getBoard().restoreBoard()) {
+			return board.getBoardSnapshot();
+		} else {
+			return null;
+		}
 	}
 	
 	public void generateBoard() {
 		board.generateBoard();
+		DatabaseManagerFactory.getDatabaseManagerInstance().registerGame(game);
+		dropGameState();
 	}
 	
-	public void dropBoard() {
-		board.dropBoard();
+	public void terminate() {
+//		load state here
+		if(game.getBoard().restoreBoard()) {
+//			terminate game here
+			game.terminateGame();
+			DatabaseManagerFactory.getDatabaseManagerInstance().terminateGame(game);
+		}
+		dropGameState();
 	}
 }

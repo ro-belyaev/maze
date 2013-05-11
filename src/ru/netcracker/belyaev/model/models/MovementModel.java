@@ -2,6 +2,7 @@ package ru.netcracker.belyaev.model.models;
 
 import ru.netcracker.belyaev.enums.Direction;
 import ru.netcracker.belyaev.enums.GameCases;
+import ru.netcracker.belyaev.enums.PlayerActions;
 import ru.netcracker.belyaev.model.entities.OnePointOnMap;
 import ru.netcracker.belyaev.model.entities.Player;
 import ru.netcracker.belyaev.model.entities.River;
@@ -23,15 +24,17 @@ public class MovementModel {
 		OnePointOnMap currentPosition = player.getPosition();
 		OnePointOnMap destination = currentPosition.nextPoint(direction);
 		messenger.informAboutAction(GameCases.GO, currentPosition, destination, player);
-		Wall wall = Board.getInstance().getWall();
+		game.setLastPlayerAction(PlayerActions.GO);
+		game.setDirectionOfLastPlayerAction(direction);
+		Wall wall = game.getBoard().getWall();
 		if(wall != null && wall.isWallBetweenTwoPointsOnOneLine(currentPosition, destination)) {
 			messenger.informAboutAction(GameCases.INSIDE_WALL, currentPosition, destination, player);
 		}
-		else if(Board.getInstance().isOutside(destination)) {
+		else if(game.getBoard().isOutside(destination)) {
 			messenger.informAboutAction(GameCases.OUTSIDE_WALL, currentPosition, destination, player);
 		}
 		else {
-			River river = Board.getInstance().getRiver();
+			River river = game.getBoard().getRiver();
 			if(river != null && river.thisPointIsInTheRiver(destination)) {
 				OnePointOnMap lastDestination = river.raftOnTheRiver(destination);
 				messenger.informAboutAction(GameCases.RIVER, destination, lastDestination, player);

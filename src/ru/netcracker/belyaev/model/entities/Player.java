@@ -26,6 +26,9 @@ public class Player {
 			}
 		}
 	}
+	public int getHealth() {
+		return this.health;
+	}
 	public OnePointOnMap getPosition() {
 		return this.position;
 	}
@@ -111,5 +114,11 @@ public class Player {
 		info.append("has " + this.getNumOfShots() + " shots");
 		info.append(System.getProperty("line.separator"));
 		return info.toString();
+	}
+	public void setNumOfShots(int num) {
+		this.numOfShots = num;
+	}
+	public void setNumOfHealt(int num) {
+		this.health = num;
 	}
 }

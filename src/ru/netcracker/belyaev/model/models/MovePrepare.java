@@ -22,21 +22,21 @@ public class MovePrepare {
 	}
 	
 	public void checkMageOnThisPoint(OnePointOnMap point) {
-		Mage mage = Board.getInstance().getMage();
+		Mage mage = game.getBoard().getMage();
 		if(mage != null && mage.isMageOnThisPoint(point)) {
 			messenger.informAboutAction(GameCases.FIND_MAGE, point, game.getCurrentPlayer());
 		}
 	}
 	
 	public void checkArchOnThisPoint(OnePointOnMap point) {
-		Arch arch = Board.getInstance().getArch();
+		Arch arch = game.getBoard().getArch();
 		if(arch != null && arch.isArchOnThisPoint(point)) {
 			messenger.informAboutAction(GameCases.UNDER_ARCH, point, game.getCurrentPlayer());
 		}
 	}
 	
 	public void checkExitOnThisPoint(OnePointOnMap point) {
-		Exit exit = Board.getInstance().getExit();
+		Exit exit = game.getBoard().getExit();
 		if(exit != null && exit.isExitOnThisPoint(point)) {
 			messenger.informAboutAction(GameCases.EXIT_POINT, point, game.getCurrentPlayer());
 		}
@@ -55,7 +55,7 @@ public class MovePrepare {
 	
 	public List<Treasure> getTreasureOnThisPoint(OnePointOnMap point) {
 		List<Treasure> treasureOnThisPoint = new ArrayList<>();
-		List<Treasure> allTreasure = Board.getInstance().getTreasure();
+		List<Treasure> allTreasure = game.getBoard().getTreasure();
 		if(allTreasure != null) {
 			for(Treasure someTreasure : allTreasure) {
 				if(someTreasure.getPosition().equals(point) && !someTreasure.isFound()) {

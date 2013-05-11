@@ -12,13 +12,13 @@ public class WrongBoardSizeException extends Exception {
 		super();
 	}
 	
-	public static void check() throws WrongBoardSizeException {
-		int sizeX = Board.getInstance().getSizeX();
-		int sizeY = Board.getInstance().getSizeY();
-		int minSizeX = Board.getInstance().getMinSizeX();
-		int minSizeY = Board.getInstance().getMinSizeY();
-		int maxSizeX = Board.getInstance().getMaxSizeX();
-		int maxSizeY = Board.getInstance().getMaxSizeY();
+	public static void check(Board board) throws WrongBoardSizeException {
+		int sizeX = board.getSizeX();
+		int sizeY = board.getSizeY();
+		int minSizeX = board.getMinSizeX();
+		int minSizeY = board.getMinSizeY();
+		int maxSizeX = board.getMaxSizeX();
+		int maxSizeY = board.getMaxSizeY();
 		if(sizeX < minSizeX || sizeX > maxSizeX || sizeY < minSizeY || sizeY > maxSizeY) {
 			throw new WrongBoardSizeException();
 		}

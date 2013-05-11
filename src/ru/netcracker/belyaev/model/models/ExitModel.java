@@ -2,6 +2,7 @@ package ru.netcracker.belyaev.model.models;
 
 import ru.netcracker.belyaev.enums.GameCases;
 import ru.netcracker.belyaev.enums.Notification;
+import ru.netcracker.belyaev.enums.PlayerActions;
 import ru.netcracker.belyaev.model.entities.Exit;
 import ru.netcracker.belyaev.model.entities.Player;
 import ru.netcracker.belyaev.model.entities.Treasure;
@@ -18,7 +19,7 @@ public class ExitModel {
 	}
 	
 	public void exit() {
-		Exit exit = Board.getInstance().getExit();
+		Exit exit = game.getBoard().getExit();
 		if(!exit.isExitOnThisPoint(game.getCurrentPlayer().getPosition())) {
 			messenger.notifyUser(Notification.NO_EXIT);
 		}
@@ -33,6 +34,8 @@ public class ExitModel {
 				player.ExitFromMazeWithRealTreasure();
 				messenger.informAboutAction(GameCases.EXIT_WITH_REAL_TREASURE, player.getPosition(), player);
 			}
+			game.setLastPlayerAction(PlayerActions.EXIT);
+			game.setDirectionOfLastPlayerAction(null);
 			game.newMove();
 		}
 	}

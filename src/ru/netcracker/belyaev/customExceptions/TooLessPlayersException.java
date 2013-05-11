@@ -12,8 +12,8 @@ public class TooLessPlayersException extends Exception {
 		super();
 	}
 	
-	public static void check() throws TooLessPlayersException {
-		if(Board.getInstance().getNumOfPlayer() < 2) {
+	public static void check(Board board) throws TooLessPlayersException {
+		if(board.getNumOfPlayer() < 2) {
 			throw new TooLessPlayersException();
 		}
 	}

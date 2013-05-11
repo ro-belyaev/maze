@@ -6,6 +6,11 @@
 		<element pointX='3' pointY='4' step='1' />
 		<element pointX='4' pointY='4' step='1' />
 	</boardElement>
+	<boardElement type='river' count='3' generation='manual'>
+		<element pointX='1' pointY='1' step='1' />
+		<element pointX='1' pointY='2' step='1' />
+		<element pointX='2' pointY='2' step='1' />
+	</boardElement>
 	<boardElement type='wall' count='1' generation='manual'>
 		<element pointX='1' pointY='1' />
 		<element pointX='2' pointY='1' />

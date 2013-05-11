@@ -5,7 +5,7 @@ import java.util.List;
 
 import ru.netcracker.belyaev.enums.Direction;
 
-public class Wall {
+public class Wall implements PortalEntity {
 	private List<Portal> wall;
 	private int size;
 	
@@ -22,11 +22,11 @@ public class Wall {
 		return false;
 	}
 	
-	public List<Portal> getWall() {
+	public List<Portal> getPortals() {
 		return wall;
 	}
 	
-	public boolean addWall(OnePointOnMap firstPoint, OnePointOnMap secondPoint) {
+	public boolean addPortal(OnePointOnMap firstPoint, OnePointOnMap secondPoint, int fakeStep) {
 		if(firstPoint.adjoiningPoint(secondPoint)) {
 			Portal newWall = new Portal(firstPoint, secondPoint, 0);
 			if(!suchWallIsAlreadyExists(newWall)) {

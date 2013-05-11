@@ -8,16 +8,17 @@ import java.util.List;
 
 import ru.netcracker.belyaev.enums.Direction;
 
-public class River {
+public class River implements PortalEntity {
 	private List<Portal> trace;
 	private int size;
 	
 	public River() {
 		this.trace = new ArrayList<>();
 	}
-	public void addTrace(OnePointOnMap startPoint, OnePointOnMap destinationPoint, int step) {
+	public boolean addPortal(OnePointOnMap startPoint, OnePointOnMap destinationPoint, int step) {
 		Portal tmpTrace = new Portal(startPoint, destinationPoint, step);
 		trace.add(tmpTrace);
+		return true;
 	}
 	public List<Portal> getPortals() {
 		return this.trace;
@@ -80,7 +81,7 @@ public class River {
 			lastDirection = currentDirection;
 		}
 		for(int i = 1; i < points.size(); i++) {
-			this.addTrace(points.get(i - 1), points.get(i), step);
+			this.addPortal(points.get(i - 1), points.get(i), step);
 			this.size++;
 		}
 		return true;

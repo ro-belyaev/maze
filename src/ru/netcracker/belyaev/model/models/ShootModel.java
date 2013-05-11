@@ -7,6 +7,7 @@ import java.util.Random;
 import ru.netcracker.belyaev.enums.Direction;
 import ru.netcracker.belyaev.enums.GameCases;
 import ru.netcracker.belyaev.enums.Notification;
+import ru.netcracker.belyaev.enums.PlayerActions;
 import ru.netcracker.belyaev.model.entities.OnePointOnMap;
 import ru.netcracker.belyaev.model.entities.Player;
 import ru.netcracker.belyaev.model.entities.Wall;
@@ -32,7 +33,7 @@ public class ShootModel {
 					.getPointsOnOneDirection(positionOfCompetitors, direction);
 			OnePointOnMap nearestPossibleVictimsPosition = currentPlayerPosition
 					.getNearestPointInDirection(possibleVictimsPoints, direction);
-			Wall wall = Board.getInstance().getWall();
+			Wall wall = game.getBoard().getWall();
 			if(nearestPossibleVictimsPosition != null && 
 					(wall == null || !wall.isWallBetweenTwoPointsOnOneLine(currentPlayerPosition, nearestPossibleVictimsPosition))) {
 				List<Player> victims = getCompetitorsOnThisPoint(nearestPossibleVictimsPosition);
@@ -46,6 +47,8 @@ public class ShootModel {
 					messenger.informAboutAction(GameCases.INJURED, victim.getPosition(), victim);
 				}
 			}
+			game.setLastPlayerAction(PlayerActions.SHOOT);
+			game.setDirectionOfLastPlayerAction(direction);
 			game.newMove();
 		}
 		else {
@@ -56,7 +59,7 @@ public class ShootModel {
 	public List<Player> getCompetitorsOnThisPoint(OnePointOnMap point) {
 		List<Player> playersOnThisPoint = new ArrayList<>();
 		Player currentPlayer = game.getCurrentPlayer();
-		for(Player onePlayer : Board.getInstance().getPlayers()) {
+		for(Player onePlayer : game.getBoard().getPlayers()) {
 			if(onePlayer.getPosition().equals(point) && onePlayer.isAlive() && !onePlayer.equals(currentPlayer)) {
 				playersOnThisPoint.add(onePlayer);
 			}
@@ -72,7 +75,7 @@ public class ShootModel {
 	public List<OnePointOnMap> getCompetitorsPosition() {
 		List<OnePointOnMap> positions = new ArrayList<>();
 		Player currentPlayer = game.getCurrentPlayer();
-		for(Player somePlayer : Board.getInstance().getPlayers()) {
+		for(Player somePlayer : game.getBoard().getPlayers()) {
 			if(somePlayer.isAlive() && !somePlayer.equals(currentPlayer) && !positions.contains(somePlayer.getPosition())) {
 				positions.add(somePlayer.getPosition());
 			}

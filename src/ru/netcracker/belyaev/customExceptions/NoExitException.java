@@ -13,8 +13,8 @@ public class NoExitException extends Exception {
 		super();
 	}
 	
-	public static void check() throws NoExitException {
-		Exit exit = Board.getInstance().getExit();
+	public static void check(Board board) throws NoExitException {
+		Exit exit = board.getExit();
 		if(exit == null || exit.size() == 0) {
 			throw new NoExitException();
 		}

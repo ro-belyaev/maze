@@ -35,7 +35,7 @@ public class BoardModel {
 	}
 	
 	public OneCellOnBoard[][] getBoardSnapshot() {
-		OneCellOnBoard[][] snapshot = Board.getInstance().getBoardSnapshot();
+		OneCellOnBoard[][] snapshot = game.getBoard().getBoardSnapshot();
 		if(snapshot == null) {
 			messenger.notifyUser(Notification.BOARD_IS_NOT_CREATED);
 		}
@@ -43,13 +43,13 @@ public class BoardModel {
 	}
 	
 	public void generateBoard()  {
-		if(Board.getInstance().isBoardCreated()) {
+		if(game.getBoard().isBoardCreated()) {
 			messenger.notifyUser(Notification.BOARD_IS_ALREADY_CREATED);
 			return;
 		}
 		try {
-			Board.getInstance().generateBoard();
 			game.resetGame();
+			game.getBoard().generateBoard();
 			messenger.notifyUser(Notification.BOARD_GENERATION);
 			game.newMove();
 		} catch (XPathExpressionException e) {
@@ -97,10 +97,10 @@ public class BoardModel {
 			dropBoard();
 //			log.info("failed!", e);
 		} catch (WrongBoardSizeException e) {
-			int minSizeX = Board.getInstance().getMinSizeX();
-			int minSizeY = Board.getInstance().getMinSizeY();
-			int maxSizeX = Board.getInstance().getMaxSizeX();
-			int maxSizeY = Board.getInstance().getMaxSizeY();
+			int minSizeX = game.getBoard().getMinSizeX();
+			int minSizeY = game.getBoard().getMinSizeY();
+			int maxSizeX = game.getBoard().getMaxSizeX();
+			int maxSizeY = game.getBoard().getMaxSizeY();
 			System.out.println("you specify wrong size of board. Mim X is " + minSizeX + ", max X is " +
 					maxSizeX + ", min Y is " + minSizeY + ", max Y is " + maxSizeY);
 			dropBoard();
@@ -117,6 +117,6 @@ public class BoardModel {
 	}
 	
 	public void dropBoard() {
-		Board.getInstance().dropBoard();
+		game.getBoard().dropBoard();
 	}
 }

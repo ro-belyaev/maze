@@ -14,8 +14,8 @@ public class RiverFlowsThroughWallException extends Exception {
 		super();
 	}
 	
-	public static void check(OnePointOnMap firstPoint, OnePointOnMap secondPoint) throws RiverFlowsThroughWallException {
-		Wall wall = Board.getInstance().getWall();
+	public static void check(OnePointOnMap firstPoint, OnePointOnMap secondPoint, Board board) throws RiverFlowsThroughWallException {
+		Wall wall = board.getWall();
 		if(wall.isWallBetweenTwoPointsOnOneLine(firstPoint, secondPoint)) {
 			throw new RiverFlowsThroughWallException();
 		}

@@ -112,8 +112,8 @@ public class Routing {
 	public void generate() {
 		controller.generate();
 	}
-	public void stop() {
-		controller.dropBoard();
+	public void terminate() {
+		controller.terminate();
 	}
 	
 	public void route() {
@@ -171,9 +171,9 @@ public class Routing {
 //					log.info("exit");
 				}
 			}
-			else if("stop".equals(args[0])) {
+			else if("terminate".equals(args[0])) {
 				if(checkArgumentsNumber(args, 1)) {
-					stop();
+					terminate();
 //					log.info("stop");
 				}
 			}
@@ -184,14 +184,14 @@ public class Routing {
 	}
 	
 	public static void main(String[] argv) {
-		MainModel model = new MainModel();
-		View view = new ConsoleView();
-		Controller controller = new Controller(model, view);
-		model.setController(controller);
-		view.setController(controller);
+//		MainModel model = new MainModel();
+//		View view = new ConsoleView();
+//		Controller controller = new Controller(model, view);
+//		model.setController(controller);
+//		view.setController(controller);
 		
 		Routing routing = new Routing();
-		routing.setController(controller);
+//		routing.setController(controller);
 		routing.route();
 	}
 }

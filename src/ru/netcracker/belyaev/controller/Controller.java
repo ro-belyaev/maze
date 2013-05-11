@@ -32,6 +32,8 @@ public class Controller {
 	}
 	public void getBoardSnapshot() {
 		OneCellOnBoard[][] board = model.getBoardSnapshot();
+//		drop game state here
+		this.model.dropGameState();
 		if(board != null) {
 			view.refreshBoard(board);
 		}
@@ -39,8 +41,8 @@ public class Controller {
 	public void generate() {
 		model.generateBoard();
 	}
-	public void dropBoard() {
-		model.dropBoard();
+	public void terminate() {
+		model.terminate();
 	}
 	
 	public void informAboutAction(GameCases action, int startX, int startY, int destX, int destY, OnePlayer player) {
