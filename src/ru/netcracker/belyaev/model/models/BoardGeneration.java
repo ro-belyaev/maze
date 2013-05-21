@@ -1,6 +1,7 @@
 package ru.netcracker.belyaev.model.models;
 
 import java.io.IOException;
+import java.io.StringReader;
 //import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import ru.netcracker.belyaev.customExceptions.*;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import ru.netcracker.belyaev.enums.Colors;
@@ -180,18 +182,19 @@ public class BoardGeneration {
 		WrongBoardSizeException.check(board);
 	}
 	
-	public static void generate(Board board) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException, TooManyTreasuresException, RiverException, TooLessPlayersException, NoExitException, OutOfBoardException, NoBoardSizeException, WrongBoardSizeException, NotAdjoiningWallPoints, RiverFlowsThroughWallException {
+	public static void generate(Board board, String gameXml) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException, TooManyTreasuresException, RiverException, TooLessPlayersException, NoExitException, OutOfBoardException, NoBoardSizeException, WrongBoardSizeException, NotAdjoiningWallPoints, RiverFlowsThroughWallException {
 		DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
 		domFactory.setNamespaceAware(true);
 		DocumentBuilder builder = domFactory.newDocumentBuilder();
-		Document doc = builder.parse("C:/Users/Roman/study/NetCracker/projects/maze_web/src/configuration.xml");
+//		Document doc = builder.parse("C:/Users/Roman/study/NetCracker/projects/maze_web/src/configuration.xml");
+		Document doc = builder.parse(new InputSource(new StringReader(gameXml)));
 		
 //		InputStream xml = BoardGeneration.class.getResourceAsStream("C:/Users/Roman/study/NetCracker/projects/maze_web/src/configuration.xml");
 //		Document doc = builder.parse(xml);
 		
 		XPathFactory factory = XPathFactory.newInstance();
 		XPath xpath = factory.newXPath();
-				
+		
 		BoardGeneration.generateBoard(doc, xpath, board);
 		BoardGeneration.generateWall(doc, xpath, board);
 		BoardGeneration.generateRiver(doc, xpath, board);

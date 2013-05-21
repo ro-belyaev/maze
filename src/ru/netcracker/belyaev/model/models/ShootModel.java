@@ -14,19 +14,24 @@ import ru.netcracker.belyaev.model.entities.Wall;
 
 public class ShootModel {
 	private MessengerModel messenger;
+	private InformerModel informer;
 	private Game game;
 	
 	public void setMessenger(MessengerModel messenger) {
 		this.messenger = messenger;
 	}
+	public void setInformer(InformerModel informer) {
+		this.informer = informer;
+	}
 	public void setGame(Game game) {
 		this.game = game;
 	}
 	
-	public void shoot(Direction direction) {
+	public boolean shoot(Direction direction) {
 		Player currentPlayer = game.getCurrentPlayer();
 		OnePointOnMap currentPlayerPosition = currentPlayer.getPosition();
 		if(currentPlayer.canShoot()) {
+			informer.addActionInformer(PlayerActions.SHOOT, direction);
 			messenger.informAboutAction(GameCases.SHOT, currentPlayerPosition, currentPlayerPosition.nextPoint(direction), currentPlayer);
 			List<OnePointOnMap> positionOfCompetitors = getCompetitorsPosition();
 			List<OnePointOnMap> possibleVictimsPoints = currentPlayerPosition
@@ -41,19 +46,23 @@ public class ShootModel {
 				Player victim = victims.get(victimItem);
 				victim.injure();
 				if(!victim.isAlive()) {
+					informer.addResultInformer(GameCases.KILLED, victim.getName());
 					messenger.informAboutAction(GameCases.KILLED, victim.getPosition(), victim);
 				}
 				else {
+					informer.addResultInformer(GameCases.INJURED, victim.getName());
 					messenger.informAboutAction(GameCases.INJURED, victim.getPosition(), victim);
 				}
 			}
 			game.setLastPlayerAction(PlayerActions.SHOOT);
 			game.setDirectionOfLastPlayerAction(direction);
 			game.newMove();
+			return true;
 		}
 		else {
 			messenger.notifyUser(Notification.NO_BULLET);
 		}
+		return false;
 	}
 	
 	public List<Player> getCompetitorsOnThisPoint(OnePointOnMap point) {

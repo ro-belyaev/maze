@@ -10,16 +10,20 @@ import ru.netcracker.belyaev.model.entities.Treasure;
 
 public class TreasureModel {
 	private MessengerModel messenger;
+	private InformerModel informer;
 	private Game game;
 	
 	public void setMessenger(MessengerModel messenger) {
 		this.messenger = messenger;
 	}
+	public void setInformerModel(InformerModel informer) {
+		this.informer = informer;
+	}
 	public void setGame(Game game) {
 		this.game = game;
 	}
 	
-	public void upTreasure(int colorID) {
+	public boolean upTreasure(int colorID) {
 		Player player = game.getCurrentPlayer();
 		if(player.hasTreasure()) {
 			messenger.notifyUser(Notification.ALREADY_HAS_TREASURE);
@@ -34,15 +38,18 @@ public class TreasureModel {
 			}
 			else {
 				player.takeTreasure(treasure);
+				informer.addActionInformer(PlayerActions.TAKE_TREASURE, treasure.getColorID());
 				messenger.informAboutAction(GameCases.UP_TREASURE, player.getPosition(), player, treasure.getColorID());
 				game.setLastPlayerAction(PlayerActions.TAKE_TREASURE);
 				game.setDirectionOfLastPlayerAction(null);
 				game.newMove();
+				return true;
 			}
 		}
+		return false;
 	}
 		
-	public void dropTreasure() {
+	public boolean dropTreasure() {
 		Player player = game.getCurrentPlayer();
 		if(!player.hasTreasure()) {
 			messenger.notifyUser(Notification.HAVE_NO_TREASURE);
@@ -50,10 +57,13 @@ public class TreasureModel {
 		else {
 			Treasure treasure = player.getTreasure();
 			player.dropTreasure();
+			informer.addActionInformer(PlayerActions.DROP_TREASURE, treasure.getColorID());
 			messenger.informAboutAction(GameCases.DROP_TREASURE, player.getPosition(), player, treasure.getColorID());
 			game.setLastPlayerAction(PlayerActions.DROP_TREASURE);
 			game.newMove();
+			return true;
 		}
+		return false;
 	}
 	
 	public static Treasure getTreasureByColorID(int colorID, Game game) {

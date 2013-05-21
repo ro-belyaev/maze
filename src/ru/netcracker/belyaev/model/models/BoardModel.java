@@ -42,14 +42,14 @@ public class BoardModel {
 		return snapshot;
 	}
 	
-	public void generateBoard()  {
+	public void generateBoard(String gameXml)  {
 		if(game.getBoard().isBoardCreated()) {
 			messenger.notifyUser(Notification.BOARD_IS_ALREADY_CREATED);
 			return;
 		}
 		try {
 			game.resetGame();
-			game.getBoard().generateBoard();
+			game.getBoard().generateBoard(gameXml);
 			messenger.notifyUser(Notification.BOARD_GENERATION);
 			game.newMove();
 		} catch (XPathExpressionException e) {

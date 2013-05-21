@@ -12,10 +12,14 @@ import ru.netcracker.belyaev.model.entities.Treasure;
 
 public class MovePrepare {
 	private MessengerModel messenger;
+	private InformerModel informer;
 	private Game game;
 	
 	public void setMessenger(MessengerModel messenger) {
 		this.messenger = messenger;
+	}
+	public void setInformerModel(InformerModel informer) {
+		this.informer = informer;
 	}
 	public void setGame(Game game) {
 		this.game = game;
@@ -24,6 +28,7 @@ public class MovePrepare {
 	public void checkMageOnThisPoint(OnePointOnMap point) {
 		Mage mage = game.getBoard().getMage();
 		if(mage != null && mage.isMageOnThisPoint(point)) {
+			informer.addPrepareInformer(GameCases.FIND_MAGE);
 			messenger.informAboutAction(GameCases.FIND_MAGE, point, game.getCurrentPlayer());
 		}
 	}
@@ -31,6 +36,7 @@ public class MovePrepare {
 	public void checkArchOnThisPoint(OnePointOnMap point) {
 		Arch arch = game.getBoard().getArch();
 		if(arch != null && arch.isArchOnThisPoint(point)) {
+			informer.addPrepareInformer(GameCases.UNDER_ARCH);
 			messenger.informAboutAction(GameCases.UNDER_ARCH, point, game.getCurrentPlayer());
 		}
 	}
@@ -38,6 +44,7 @@ public class MovePrepare {
 	public void checkExitOnThisPoint(OnePointOnMap point) {
 		Exit exit = game.getBoard().getExit();
 		if(exit != null && exit.isExitOnThisPoint(point)) {
+			informer.addPrepareInformer(GameCases.EXIT_POINT);
 			messenger.informAboutAction(GameCases.EXIT_POINT, point, game.getCurrentPlayer());
 		}
 	}
@@ -47,6 +54,7 @@ public class MovePrepare {
 		if(treasure != null) {
 			int[] colourID = new int[treasure.size()];
 			for(int i = 0; i < treasure.size(); i++) {
+				informer.addPrepareInformer(GameCases.FIND_TREASURE, treasure.get(i).getColorID());
 				colourID[i] = treasure.get(i).getColorID();
 			}
 			messenger.informAboutAction(GameCases.FIND_TREASURE, point, game.getCurrentPlayer(), colourID);

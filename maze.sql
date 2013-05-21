@@ -1,5 +1,10 @@
+DROP TABLE users CASCADE CONSTRAINTS;
+DROP SEQUENCE users_seq;
+
 DROP TABLE game CASCADE CONSTRAINTS;
 DROP SEQUENCE game_seq;
+
+DROP TABLE game_users CASCADE CONSTRAINTS;
 
 
 DROP TABLE move CASCADE CONSTRAINTS;
@@ -15,6 +20,33 @@ DROP SEQUENCE simple_entity_seq;
 DROP TABLE portal_entity CASCADE CONSTRAINTS;
 DROP SEQUENCE portal_seq;
 
+
+CREATE TABLE users
+(
+	id NUMBER CONSTRAINT user_id_nn NOT NULL,
+	name VARCHAR2(20) CONSTRAINT user_name_nn NOT NULL,
+	password VARCHAR2(20) CONSTRAINT user_pass_nn NOT NULL,
+	CONSTRAINT users_pk
+	    PRIMARY KEY (id)
+);
+
+CREATE SEQUENCE users_seq
+START WITH 0
+INCREMENT BY 1
+MINVALUE 0
+NOMAXVALUE;
+
+create or replace trigger users_trg
+before insert on users
+for each row
+begin
+    if :new.id is null then
+	select users_seq.nextval into :new.id from dual;
+    end if;
+end;
+/
+
+----------------------------------------------
 
 CREATE TABLE game
 (
@@ -42,6 +74,23 @@ begin
     end if;
 end;
 /
+------------------------------------------------
+
+CREATE TABLE game_users
+(
+	game_id NUMBER,
+	user_id NUMBER,
+	player_id NUMBER CONSTRAINT player_id_nn NOT NULL,
+	CONSTRAINT game_users_game_id_fk
+	    FOREIGN KEY (game_id)
+	    REFERENCES game (id),
+	CONSTRAINT user_id_fk
+	    FOREIGN KEY (user_id)
+	    REFERENCES users (id),
+	CONSTRAINT game_users_pk
+	    PRIMARY KEY (game_id, user_id)
+);
+
 ------------------------------------------------
 
 CREATE TABLE move
@@ -83,6 +132,7 @@ CREATE TABLE player
 	game_id NUMBER,
 	move_id NUMBER,
 	player_id NUMBER,
+------	player_user_id NUMBER CONSTRAINT player_user_id_nn NOT NULL,
 	name VARCHAR2(20),
 	position_x NUMBER NOT NULL,
 	position_y NUMBER NOT NULL,
@@ -91,9 +141,6 @@ CREATE TABLE player
 	state VARCHAR2(15) CHECK(state IN ('alive', 'dead', 'winner', 'exit_from_maze', 'loser')) NOT NULL,
 	CONSTRAINT player_pk
 	    PRIMARY KEY (game_id, move_id, player_id),
-/*	CONSTRAINT game_id_fk     */
-/*	    FOREIGN KEY (game_id) */
-/*	    REFERENCES game (id), */
 	CONSTRAINT move_id_fk
 	    FOREIGN KEY (game_id, move_id)
 	    REFERENCES move (game_id, move_id)

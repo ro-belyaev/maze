@@ -43,5 +43,11 @@
         <option>1</option>
         <option>2</option>
     </select>
+    <select id="game-id">
+    	<option>0</option>
+    	<option>1</option>
+    	<option>2</option>
+    	<option>3</option>
+    </select>
 </body>
 </html>

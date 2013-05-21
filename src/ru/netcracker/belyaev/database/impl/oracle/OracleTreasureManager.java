@@ -14,15 +14,17 @@ public class OracleTreasureManager {
 		String saveTreasure = "begin insert into treasure (game_id, move_id, color, " +
 			"x_position, y_position, state, owner_id, worth) " +
 				"values (?, ?, ?, ?, ?, ?, ?, ?); end;";
-		for(Treasure someTreasure : treasures) {
-			String color = String.valueOf(someTreasure.getColorID());
-			String x = String.valueOf(someTreasure.getPosition().getX());
-			String y = String.valueOf(someTreasure.getPosition().getY());
-			String state = someTreasure.isFound() ? "found" : "not_found";
-			String ownerId = String.valueOf(someTreasure.getOwnerID());
-			String worth = someTreasure.isReal() ? "real" : "fake";
-			conn.executePreparedStatement(saveTreasure, gameId, moveId, color,
-					x, y, state, ownerId, worth);
+		if(treasures != null) {
+			for(Treasure someTreasure : treasures) {
+				String color = String.valueOf(someTreasure.getColorID());
+				String x = String.valueOf(someTreasure.getPosition().getX());
+				String y = String.valueOf(someTreasure.getPosition().getY());
+				String state = someTreasure.isFound() ? "found" : "not_found";
+				String ownerId = String.valueOf(someTreasure.getOwnerID());
+				String worth = someTreasure.isReal() ? "real" : "fake";
+				conn.executePreparedStatement(saveTreasure, gameId, moveId, color,
+						x, y, state, ownerId, worth);
+			}
 		}
 	}
 	

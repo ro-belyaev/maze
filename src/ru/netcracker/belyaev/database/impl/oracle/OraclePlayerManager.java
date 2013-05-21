@@ -63,9 +63,11 @@ public class OraclePlayerManager {
 	}
 	
 	public static Treasure getTreasureOfCurrentPlayer(List<Treasure> treasures, Player player) {
-		for(Treasure treasure : treasures) {
-			if(treasure.isFound() && treasure.getOwnerID() == player.getUID()) {
-				return treasure;
+		if(treasures != null) {
+			for(Treasure treasure : treasures) {
+				if(treasure.isFound() && treasure.getOwnerID() == player.getUID()) {
+					return treasure;
+				}
 			}
 		}
 		return null;

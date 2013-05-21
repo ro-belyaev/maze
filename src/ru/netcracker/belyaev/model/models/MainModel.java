@@ -7,6 +7,7 @@ import ru.netcracker.belyaev.enums.Direction;
 public class MainModel {
 	private Game game = new Game();
 	private MessengerModel messenger = new MessengerModel();
+	private InformerModel informer = new InformerModel();
 	private ShootModel weapon = new ShootModel();
 	private MovementModel movement = new MovementModel();
 	private BoardModel board = new BoardModel();
@@ -20,20 +21,27 @@ public class MainModel {
 	}
 	{
 		this.game.setMessenger(messenger);
+		this.game.setInformerModel(informer);
 		this.game.setMovePrepare(move);
 		this.weapon.setMessenger(messenger);
+		this.weapon.setInformer(informer);
 		this.weapon.setGame(game);
 		this.movement.setMessenger(messenger);
+		this.movement.setInformerModel(informer);
 		this.movement.setGame(game);
 		this.board.setMessenger(messenger);
 		this.board.setGame(game);
 		this.treasure.setMessenger(messenger);
+		this.treasure.setInformerModel(informer);
 		this.treasure.setGame(game);
 		this.mage.setMessenger(messenger);
+		this.mage.setInformerModel(informer);
 		this.mage.setGame(game);
 		this.exit.setMessenger(messenger);
+		this.exit.setInformerModel(informer);
 		this.exit.setGame(game);
 		this.move.setMessenger(messenger);
+		this.move.setInformerModel(informer);
 		this.move.setGame(game);
 	}
 	
@@ -41,6 +49,10 @@ public class MainModel {
 	public void dropGameState() {
 		this.game.resetGame();
 		this.game.getBoard().dropBoard();
+	}
+	
+	public void saveGameState() {
+		DatabaseManagerFactory.getDatabaseManagerInstance().saveGameState(this.game);
 	}
 	
 	public boolean moveShouldBeContinued(int uid) {
@@ -62,41 +74,52 @@ public class MainModel {
 	public void go(int uid, Direction direction) {
 		if(moveShouldBeContinued(uid)) {
 			movement.go(direction);
+			saveGameState();
 		}
 		dropGameState();
 	}
 		
 	public void upTreasure(int uid, int colorID) {
 		if(moveShouldBeContinued(uid)) {
-			treasure.upTreasure(colorID);
+			if(treasure.upTreasure(colorID)) {
+				saveGameState();
+			}
 		}
 		dropGameState();
 	}
 	
 	public void dropTreasure(int uid) {
 		if(moveShouldBeContinued(uid)) {
-			treasure.dropTreasure();
+			if(treasure.dropTreasure()) {
+				saveGameState();
+			}
 		}
 		dropGameState();
 	}
 	
 	public void askPrediction(int uid) {
 		if(moveShouldBeContinued(uid)) {
-			mage.askPrediction();
+			if(mage.askPrediction()) {
+				saveGameState();
+			}
 		}
 		dropGameState();
 	}
 	
 	public void exit(int uid) {
 		if(moveShouldBeContinued(uid)) {
-			exit.exit();
+			if(exit.exit()) {
+				saveGameState();
+			}
 		}
 		dropGameState();
 	}
 	
 	public void shoot(int uid, Direction direction) {
 		if(moveShouldBeContinued(uid)) {
-			weapon.shoot(direction);
+			if(weapon.shoot(direction)) {
+				saveGameState();
+			}
 		}
 		dropGameState();
 	}
@@ -111,10 +134,11 @@ public class MainModel {
 		}
 	}
 	
-	public void generateBoard() {
-		board.generateBoard();
-		DatabaseManagerFactory.getDatabaseManagerInstance().registerGame(game);
+	public String generateBoard(String gameXml) {
+		board.generateBoard(gameXml);
+		String gameId = DatabaseManagerFactory.getDatabaseManagerInstance().registerGame(game);
 		dropGameState();
+		return gameId;
 	}
 	
 	public void terminate() {
@@ -125,5 +149,9 @@ public class MainModel {
 			DatabaseManagerFactory.getDatabaseManagerInstance().terminateGame(game);
 		}
 		dropGameState();
+	}
+	
+	public void setGameId(String gameId) {
+		game.setGameId(gameId);
 	}
 }

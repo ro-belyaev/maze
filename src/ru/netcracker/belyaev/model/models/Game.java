@@ -1,6 +1,5 @@
 package ru.netcracker.belyaev.model.models;
 
-import ru.netcracker.belyaev.database.api.DatabaseManagerFactory;
 import ru.netcracker.belyaev.enums.Direction;
 import ru.netcracker.belyaev.enums.GameCases;
 import ru.netcracker.belyaev.enums.Notification;
@@ -11,12 +10,14 @@ import ru.netcracker.belyaev.model.entities.Player;
 
 public class Game {
 	private MessengerModel messenger;
+	private InformerModel informer;
 	private MovePrepare move;
 	private Board board;
 	private int currentPlayerID;
 	private PlayerActions lastPlayerAction;
 	private Direction directionOfLastPlayerAction;
 	private boolean gameIsTerminated = false;
+	private String gameId;
 	
 	public Game() {
 		board = new Board(this);
@@ -27,6 +28,12 @@ public class Game {
 	}
 	public MessengerModel getMessenger() {
 		return this.messenger;
+	}
+	public void setInformerModel(InformerModel informer) {
+		this.informer = informer;
+	}
+	public InformerModel getInformerModel() {
+		return this.informer;
 	}
 	public void setMovePrepare(MovePrepare move) {
 		this.move = move;
@@ -58,15 +65,15 @@ public class Game {
 			this.board.dropBoard();
 		}
 		else {
-			boolean firstMove = false;
-			if(this.getCurrentPlayerID() == -1) {
-				firstMove = true;
-			}
+//			boolean firstMove = false;
+//			if(this.getCurrentPlayerID() == -1) {
+//				firstMove = true;
+//			}
 			nextPlayer();
 //			save game state here
-			if(!firstMove) {
-				DatabaseManagerFactory.getDatabaseManagerInstance().saveGameState(this);
-			}
+//			if(!firstMove) {
+//				DatabaseManagerFactory.getDatabaseManagerInstance().saveGameState(this);
+//			}
 			// maybe it's better to register game here (if firstMove)
 
 			Player player = getCurrentPlayer();
@@ -159,6 +166,12 @@ public class Game {
 	}
 	public Direction getDirectionOfLastPlayerAction() {
 		return this.directionOfLastPlayerAction;
+	}
+	public void setGameId(String id) {
+		this.gameId = id;
+	}
+	public String getGameId() {
+		return this.gameId;
 	}
 	
 }

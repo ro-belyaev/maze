@@ -38,11 +38,14 @@ public class Controller {
 			view.refreshBoard(board);
 		}
 	}
-	public void generate() {
-		model.generateBoard();
+	public String generate(String gameXml) {
+		return model.generateBoard(gameXml);
 	}
 	public void terminate() {
 		model.terminate();
+	}
+	public void setGameId(String gameId) {
+		model.setGameId(gameId);
 	}
 	
 	public void informAboutAction(GameCases action, int startX, int startY, int destX, int destY, OnePlayer player) {

@@ -1,0 +1,179 @@
+body {
+    background-color: #ddddff;
+    margin: 0px;
+    padding: 20px;
+}
+#map {
+    width: 500px;
+    height: 500px;
+    margin-right: 20px;
+    position: relative;
+    float: left;
+    border: 5px ridge #6633ff;
+}
+#info {
+    border: 3px ridge #6666ff;
+}
+#controls {
+    width: 400px;
+    margin-bottom: 20px;
+}
+.player-cell {
+	width: 150px;
+	height: 30px;
+	padding-top: 7px;
+	padding-left: 15px;
+	font-size: 15pt;
+	border: 1px solid #e2e2e2;
+	background: rgb(163, 161, 161);
+	display: inline;
+	position: relative;
+	float: left;
+	clear: both;
+}
+.player-position {
+	height: 39px;
+	position: relative;
+}
+.player-position select {
+	margin-top: 9px;
+}
+em.required {
+    color: red;
+}
+#map .cell {
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    background-color: #ffff99;
+    border: 1px dotted blue;
+    display: none;
+}
+#map .cell:hover {
+    background-color: #ffff55;
+}
+#info th {
+    padding: 5px;
+    font-size: 16px;
+    background-color: #ccccff;
+}
+#info td {
+    border-top: 1px solid gray;
+    padding: 5px;
+    text-align: center;
+}
+#info tr:hover {
+    background-color: #bbbbee;
+}
+#info td span.action:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+#map .object_0 {
+    position: absolute;
+    background-image: url("ims/arch.png");
+    background-size: 100% 100%;
+    display: none;
+    border: none;
+    z-index: 1;
+}
+#map .object_1 {
+    position: absolute;
+    background-image: url("ims/gold.png");
+    background-size: 100% 100%;
+    display: none;
+    border: none;
+    z-index: 1;
+}
+#map .object_2 {
+     position: absolute;
+     background-image: url("ims/mage.png");
+     background-size: 100% 100%;
+     display: none;
+     border: none;
+     z-index: 1;
+ }
+#map .exit {
+    position: absolute;
+    background-image: url("ims/exit.png");
+    background-size: 100% 100%;
+    display: none;
+    border: none;
+    z-index: 1;
+}
+#map .wall {
+    position: absolute;
+    background-color: red;
+    z-index: 1;
+    opacity: 0;
+    cursor: pointer;
+}
+#map .wall.active {
+    border: 3px ridge white;
+    z-index: 2;
+}
+#map .wall:hover {
+    opacity: 0.4;
+    cursor: pointer;
+}
+#map .wall.exist, #map .wall.exist:hover {
+    position: absolute;
+    background-color: red;
+    z-index: 1;
+    opacity: 1;
+}
+#map .river {
+    position: absolute;
+    background-color: #3333ff;
+    display: none;
+    border: none;
+    z-index: 1;
+}
+#map .river .arr {
+
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+#map .river .arr_l {
+    background-image: url("ims/arr_l.png");
+}
+#map .river .arr_r {
+    background-image: url("ims/arr_r.png");
+}
+#map .river .arr_t {
+    background-image: url("ims/arr_t.png");
+}
+#map .river .arr_b {
+    background-image: url("ims/arr_b.png");
+}
+#map .active {
+    background-color: #c71585;
+    z-index: 2;
+}
+table.submenu {
+    position: absolute;
+    z-index: 10;
+    width: 130px;
+    display: none;
+    background-color: #fffacd;
+    border: 3px ridge #add8e6;
+}
+table.submenu span {
+    padding: 5px;
+    font-size: 14px;
+    color: #00008b;
+}
+table.submenu tr:hover {
+    background-color: #ddd4bc;
+}
+table.submenu td {
+    width: 130px;
+    height: 30px;
+    cursor: pointer;
+}
+#map .cell.withSubMenu {
+    background-color: #ffa07a;
+}

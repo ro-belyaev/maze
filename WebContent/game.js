@@ -39,16 +39,17 @@ $(function() {
             }
         } else if(targetId == 'right' || targetId == 'left' || targetId == 'up' || targetId == 'down') {
             if(goActionIsSelected || shootActionIsSelected) {
-                var action = (targetId == 'go') ? 'go' : 'shoot';
+                var action = (goActionIsSelected) ? 'go' : 'shoot';
                 $.ajax({
                     type: 'GET',
                     contentType: 'application/json',
                     data: {
                         uid: $('#user-id').val(),
+                        gameId: $('#game-id').val(),
                         action: action,
                         direction: targetId
                     },
-                    url: 'http://localhost:8081/maze_web_project/makeAction.jsp'
+                    url: 'MakeAction'
                 })
                     .done(function() {
                         goActionIsSelected = 0;
@@ -64,9 +65,10 @@ $(function() {
             $.ajax({
                 type: 'GET',
                 data: {
-                    action: targetId
+                    action: targetId,
+                    gameId: $('#game-id').val()
                 },
-                url: 'http://localhost:8081/maze_web_project/makeAction.jsp'
+                url: 'MakeAction'
             })
                 .fail(function() {
                     alert('ajax request for draw, generate or stop action is failed');

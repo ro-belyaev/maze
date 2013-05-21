@@ -9,16 +9,20 @@ import ru.netcracker.belyaev.model.entities.Treasure;
 
 public class MageModel {
 	private MessengerModel messenger;
+	private InformerModel informer;
 	private Game game;
 	
 	public void setMessenger(MessengerModel messenger) {
 		this.messenger = messenger;
 	}
+	public void setInformerModel(InformerModel informer) {
+		this.informer = informer;
+	}
 	public void setGame(Game game) {
 		this.game = game;
 	}
 	
-	public void askPrediction() {
+	public boolean askPrediction() {
 		Player player = game.getCurrentPlayer();
 		Treasure treasure = player.getTreasure();
 		if(treasure == null) {
@@ -31,15 +35,19 @@ public class MageModel {
 			}
 			else {
 				if(mage.makePrediction(treasure)) {
+					informer.addResultInformer(GameCases.PREDICTION_REAL);
 					messenger.informAboutAction(GameCases.PREDICTION_REAL, player.getPosition(), player);
 				}
 				else {
+					informer.addResultInformer(GameCases.PREDICTION_FAKE);
 					messenger.informAboutAction(GameCases.PREDICTION_FAKE, player.getPosition(), player);
 				}
 				game.setLastPlayerAction(PlayerActions.ASK_PREDICTION);
 				game.setDirectionOfLastPlayerAction(null);
 				game.newMove();
+				return true;
 			}
 		}
+		return false;
 	}
 }

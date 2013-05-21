@@ -3,46 +3,39 @@
 $(function() {
     var movesInTable = 0;
     var state = {
-        players: {
-            0: {
+        players: [
+            {
                 name: 'Roman',
                 turn: 1,
-                moves: {
-                    0: {
-                        action: 'go up',
-                        result: 'smash into wall'
-                    },
-                    1: {
-                        action: 'shoot left',
-                        result: 'miss'
-                    }
-                }
+                moves: [
+                        ['go up',
+                        'smash into wall'],
+                        
+                        ['shoot left',
+                        'miss']
+                ]
             },
-            1: {
+            {
                 name: 'Lob',
                 turn: 2,
-                moves: {
-                    0: {
-                        action: 'shoot up',
-                        result: 'miss'
-                    },
-                    1: {
-                        action: 'go right',
-                        result: 'go to 1 cell right'
-                    }
-                }
+                moves: [
+                        ['under arch',
+                        'shoot up',
+                        'miss'],
+                        
+                        ['go right',
+                        'go to 1 cell right']
+                ]
             },
-            2: {
+            {
                 name: 'Karo',
                 turn: 3,
-                moves: {
-                    0: {
-                        action: 'shoot down',
-                        result: 'miss'
-                    }
-                }
+                moves: [
+                        ['shoot down',
+                        'miss']
+                ]
             }
-        },
+        ],
         movesCount: 5,
         playersCount: 3
     };
@@ -52,17 +45,18 @@ $(function() {
 function refreshTable(movesInTable, stateObj) {
     var playersCount = stateObj.playersCount;
     var movesCount = stateObj.movesCount;
-    while(movesCount - movesInTable > 0) {
+    while (movesCount - movesInTable > 0) {
         var currentPlayer = movesInTable % playersCount;
         console.log(currentPlayer);
         var moveOfCurrentPlayer = Math.floor(movesInTable/playersCount);
         var ul = $('<ul></ul>');
-        $('<li></li>')
-            .text(stateObj.players[currentPlayer].moves[moveOfCurrentPlayer].action)
-            .appendTo(ul);
-        $('<li></li>')
-            .text(stateObj.players[currentPlayer].moves[moveOfCurrentPlayer].result)
-            .appendTo(ul);
+        var moves = stateObj.players[currentPlayer].moves[moveOfCurrentPlayer];
+        for (var i = 0; i < moves.length; i++) {
+        	$('<li></li>')
+        		.text(moves[i])
+        		.appendTo(ul);
+        }
+        
         movesInTable++;
         var numOfMoveCell = $('<td></td>')
             .text(movesInTable);
@@ -77,7 +71,7 @@ function refreshTable(movesInTable, stateObj) {
         for(var i = currentPlayer + 1; i < playersCount; i++) {
             row.append('<td></td>');
         }
-        $('#process-table tr:first')
+        $('#process-table tr:last')
             .after(row);
         console.log(row);
     }

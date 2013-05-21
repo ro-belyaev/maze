@@ -75,8 +75,8 @@ public class Board {
 		}
 	}
 	
-	public void generateBoard() throws XPathExpressionException, ParserConfigurationException, SAXException, IOException, TooManyTreasuresException, RiverException, TooLessPlayersException, NoExitException, OutOfBoardException, NoBoardSizeException, WrongBoardSizeException, NotAdjoiningWallPoints, RiverFlowsThroughWallException {
-		BoardGeneration.generate(this);
+	public void generateBoard(String gameXml) throws XPathExpressionException, ParserConfigurationException, SAXException, IOException, TooManyTreasuresException, RiverException, TooLessPlayersException, NoExitException, OutOfBoardException, NoBoardSizeException, WrongBoardSizeException, NotAdjoiningWallPoints, RiverFlowsThroughWallException {
+		BoardGeneration.generate(this, gameXml);
 		this.isBoardCreated = true;
 		boardSnapshot = new BoardSnapshot(sizeX, sizeY, game);
 	}

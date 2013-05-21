@@ -52,4 +52,33 @@ public class OracleServiceFunctionality {
 		return String.valueOf(moveId);
 	}
 	
+	public static String getNextPlayerIdByMoveId(OracleConnection conn, String gameId, String moveId) {
+		String query = "select cur_player_id from move where game_id=? and move_id=?";
+		int playerId = -1;
+		try {
+			ResultSet rs = conn.executePreparedStatement(query, gameId, moveId);
+			rs.next();
+			playerId = rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return String.valueOf(playerId);
+	}
+	
+	public static String[] getMoveInformationByMoveId(OracleConnection conn, String gameId, String moveId) {
+		String query = "select action, direction from move where game_id=? and move_id=?";
+		String action = null;
+		String direction = null;
+		try {
+			ResultSet rs = conn.executePreparedStatement(query, gameId, moveId);
+			rs.next();
+			action = rs.getString(1);
+			direction = rs.getString(2);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		String[] result = {action, direction};
+		return result;
+	}
+	
 }

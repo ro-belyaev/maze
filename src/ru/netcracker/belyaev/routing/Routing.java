@@ -25,13 +25,14 @@ public class Routing {
 		model.setController(controller);
 		view.setController(controller);		
 		this.setController(controller);
-
 	}
 	
 	public void setController(Controller controller) {
 		this.controller = controller;
 	}
-	
+	public void setGameId(String gameId) {
+		this.controller.setGameId(gameId);
+	}
 	public boolean checkArgumentsNumber(String[] args, int shoudBeNum) {
 		if(args.length != shoudBeNum) {
 			System.out.println("Wrong amount of arguments! Should be " + (shoudBeNum - 1));
@@ -109,25 +110,21 @@ public class Routing {
 	public void drawBoard() {
 		controller.getBoardSnapshot();
 	}
-	public void generate() {
-		controller.generate();
+	public String generate(String gameXml) {
+		String gameId = controller.generate(gameXml);
+		return gameId;
 	}
 	public void terminate() {
 		controller.terminate();
 	}
 	
-	public void route() {
+	public void route(String gameId) {
 		Scanner input = new Scanner(System.in);
 		while(true) {
 			String[] args = input.nextLine().trim().split("\\s+");
+			setGameId(gameId);
 			if(args.length == 0) {
 				continue;
-			}
-			else if("generate".equals(args[0])) {
-				if(checkArgumentsNumber(args, 1)) {
-					generate();
-//					log.info("generate");
-				}
 			}
 			else if("go".equals(args[0])) {
 				if(checkArgumentsNumber(args, 3)) {
@@ -184,14 +181,8 @@ public class Routing {
 	}
 	
 	public static void main(String[] argv) {
-//		MainModel model = new MainModel();
-//		View view = new ConsoleView();
-//		Controller controller = new Controller(model, view);
-//		model.setController(controller);
-//		view.setController(controller);
-		
 		Routing routing = new Routing();
-//		routing.setController(controller);
-		routing.route();
+//		String gameId = routing.generate();
+//		routing.route(gameId);
 	}
 }

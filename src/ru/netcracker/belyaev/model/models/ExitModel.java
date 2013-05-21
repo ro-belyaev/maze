@@ -9,21 +9,26 @@ import ru.netcracker.belyaev.model.entities.Treasure;
 
 public class ExitModel {
 	private MessengerModel messenger;
+	private InformerModel informer;
 	private Game game;
 	
 	public void setMessenger(MessengerModel messenger) {
 		this.messenger = messenger;
 	}
+	public void setInformerModel(InformerModel informer) {
+		this.informer = informer;
+	}
 	public void setGame(Game game) {
 		this.game = game;
 	}
 	
-	public void exit() {
+	public boolean exit() {
 		Exit exit = game.getBoard().getExit();
 		if(!exit.isExitOnThisPoint(game.getCurrentPlayer().getPosition())) {
 			messenger.notifyUser(Notification.NO_EXIT);
 		}
 		else {
+			informer.addActionInformer(PlayerActions.EXIT);
 			Player player = game.getCurrentPlayer();
 			Treasure treasure = player.getTreasure();
 			if(treasure == null || !treasure.isReal()) {
@@ -37,6 +42,8 @@ public class ExitModel {
 			game.setLastPlayerAction(PlayerActions.EXIT);
 			game.setDirectionOfLastPlayerAction(null);
 			game.newMove();
+			return true;
 		}
+		return false;
 	}
 }
