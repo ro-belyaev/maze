@@ -7,7 +7,7 @@ import ru.netcracker.belyaev.enums.Direction;
 public class MainModel {
 	private Game game = new Game();
 	private MessengerModel messenger = new MessengerModel();
-	private InformerModel informer = new InformerModel();
+	private InformerModel informer = new InformerModel(this.game.getCurrentPlayer().getName());
 	private ShootModel weapon = new ShootModel();
 	private MovementModel movement = new MovementModel();
 	private BoardModel board = new BoardModel();
@@ -153,5 +153,9 @@ public class MainModel {
 	
 	public void setGameId(String gameId) {
 		game.setGameId(gameId);
+	}
+	
+	public InformerModel getInformer() {
+		return this.informer;
 	}
 }

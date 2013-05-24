@@ -3,6 +3,7 @@ package ru.netcracker.belyaev.database.impl.oracle;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.netcracker.belyaev.model.models.Game;
@@ -79,6 +80,20 @@ public class OracleServiceFunctionality {
 		}
 		String[] result = {action, direction};
 		return result;
+	}
+	
+	public static String[] getPlayersInformation(OracleConnection conn, String gameId) {
+		String query = "select name from player where game_id=?";
+		List<String> playersName = new ArrayList<>();
+		try {
+			ResultSet rs = conn.executePreparedStatement(query, gameId);
+			while (rs.next()) {
+				playersName.add(rs.getString(1));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return playersName.toArray(new String[playersName.size()]);
 	}
 	
 }

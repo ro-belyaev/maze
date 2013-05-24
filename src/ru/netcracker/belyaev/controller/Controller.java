@@ -1,6 +1,7 @@
 package ru.netcracker.belyaev.controller;
 
 import ru.netcracker.belyaev.enums.*;
+import ru.netcracker.belyaev.model.models.InformerModel;
 import ru.netcracker.belyaev.model.models.MainModel;
 import ru.netcracker.belyaev.view.*;
 
@@ -43,6 +44,9 @@ public class Controller {
 	}
 	public void terminate() {
 		model.terminate();
+	}
+	public InformerModel getInformer() {
+		return model.getInformer();
 	}
 	public void setGameId(String gameId) {
 		model.setGameId(gameId);

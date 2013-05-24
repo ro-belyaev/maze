@@ -5,6 +5,7 @@ import java.util.List;
 
 
 import ru.netcracker.belyaev.controller.OneMove;
+import ru.netcracker.belyaev.controller.OnePlayer;
 import ru.netcracker.belyaev.database.api.DatabaseManager;
 import ru.netcracker.belyaev.enums.Notification;
 import ru.netcracker.belyaev.model.entities.Player;
@@ -127,6 +128,20 @@ public class OracleDatabaseManager implements DatabaseManager {
 			moves.add(oneMove);
 		}
 		return moves;
+	}
+
+	@Override
+	public List<OnePlayer> getPlayers(String gameId) {
+		this.gameId = gameId;
+		OracleConnection conn = new OracleConnection();
+		List<OnePlayer> playersInfo = new ArrayList<>();
+		String[] players = OracleServiceFunctionality.getPlayersInformation(conn, gameId);
+		for (String player : players) {
+			OnePlayer onePlayerInfo = new OnePlayer();
+			onePlayerInfo.setName(player);
+			playersInfo.add(onePlayerInfo);
+		}
+		return playersInfo;
 	}
 	
 //	public String getGameId() {

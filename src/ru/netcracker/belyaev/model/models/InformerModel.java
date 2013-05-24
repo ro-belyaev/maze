@@ -12,11 +12,17 @@ public class InformerModel {
 	private List<PrepareInformer> prepareInformer;
 	private List<ActionInformer> actionInformer;
 	private List <ResultInformer> resultInformer;
+	private String currentPlayerName;
 	
-	public InformerModel() {
+	public InformerModel(String playerName) {
 		prepareInformer = new ArrayList<>();
 		actionInformer = new ArrayList<>();
 		resultInformer = new ArrayList<>();
+		this.currentPlayerName = playerName;
+	}
+	
+	public String getCurrentPlayerName() {
+		return this.currentPlayerName;
 	}
 	
 	public List<PrepareInformer> getPrepareInformer() {
@@ -61,7 +67,7 @@ public class InformerModel {
 	}
 	
 
-	class PrepareInformer {
+	public class PrepareInformer {
 		private GameCases gameCase;
 		private int treasureColorId;
 		
@@ -81,7 +87,7 @@ public class InformerModel {
 		}
 	}
 	
-	class ActionInformer {
+	public class ActionInformer {
 		private PlayerActions playerAction;
 		private Direction actionDirection;
 		private int treasureColorId;
@@ -108,7 +114,7 @@ public class InformerModel {
 		}
 	}
 	
-	class ResultInformer {
+	public class ResultInformer {
 		private GameCases gameCase;
 		private String victimName;
 		private int x1, y1, x2, y2;

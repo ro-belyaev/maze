@@ -203,7 +203,7 @@ function refreshMap() {
 }
 
 function sendMap() {
-    alert("Здесь будем отсылать карту Роме!");
+    alert("Здесь отсылается карта!");
 }
 
 function beginDrawing(ev) {

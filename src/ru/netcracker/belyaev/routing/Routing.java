@@ -8,6 +8,7 @@ import java.util.Scanner;
 import ru.netcracker.belyaev.controller.Controller;
 import ru.netcracker.belyaev.enums.Colors;
 import ru.netcracker.belyaev.enums.Direction;
+import ru.netcracker.belyaev.model.models.InformerModel;
 import ru.netcracker.belyaev.model.models.MainModel;
 import ru.netcracker.belyaev.view.ConsoleView;
 import ru.netcracker.belyaev.view.View;
@@ -106,6 +107,9 @@ public class Routing {
 		} catch(NumberFormatException e) {
 			System.out.println("Argument " + uid + " must be an integer!");
 		}
+	}
+	public InformerModel getInformer() {
+		return controller.getInformer();
 	}
 	public void drawBoard() {
 		controller.getBoardSnapshot();
