@@ -13,28 +13,31 @@ public class Controller {
 		this.view = view;
 	}
 	
-	public void go(int uid, Direction direction) {
-		model.go(uid, direction);
+	public void checkCellOfCurrentPlayerBeforeMove() {
+		model.checkCellOfCurrentPlayerBeforeMove();
 	}
-	public void upTreasure(int uid, int treasureColorID) {
-		model.upTreasure(uid, treasureColorID);
+	public boolean go(int uid, Direction direction, String ... moveId) {
+		return model.go(uid, direction, moveId);
 	}
-	public void dropTreasure(int uid) {
-		model.dropTreasure(uid);
+	public boolean upTreasure(int uid, int treasureColorID, String ... moveId) {
+		return model.upTreasure(uid, treasureColorID, moveId);
 	}
-	public void askPrediction(int uid) {
-		model.askPrediction(uid);
+	public boolean dropTreasure(int uid, String ... moveId) {
+		return model.dropTreasure(uid, moveId);
 	}
-	public void shoot(int uid, Direction direction) {
-		model.shoot(uid, direction);
+	public boolean askPrediction(int uid, String ... moveId) {
+		return model.askPrediction(uid, moveId);
 	}
-	public void exit(int uid) {
-		model.exit(uid);
+	public boolean shoot(int uid, Direction direction, String ... moveId) {
+		return model.shoot(uid, direction, moveId);
+	}
+	public boolean exit(int uid, String ... moveId) {
+		return model.exit(uid, moveId);
 	}
 	public void getBoardSnapshot() {
 		OneCellOnBoard[][] board = model.getBoardSnapshot();
 //		drop game state here
-		this.model.dropGameState();
+//		this.model.dropGameState();
 		if(board != null) {
 			view.refreshBoard(board);
 		}
@@ -45,11 +48,23 @@ public class Controller {
 	public void terminate() {
 		model.terminate();
 	}
+	public void restoreBoard(String moveId) {
+		model.restoreBoard(moveId);
+	}
 	public InformerModel getInformer() {
 		return model.getInformer();
 	}
+	public void clearInformer() {
+		model.clearInformer();
+	}
 	public void setGameId(String gameId) {
 		model.setGameId(gameId);
+	}
+	public void saveGameState() {
+		model.saveGameState();
+	}
+	public void dropGameState() {
+		model.dropGameState();
 	}
 	
 	public void informAboutAction(GameCases action, int startX, int startY, int destX, int destY, OnePlayer player) {

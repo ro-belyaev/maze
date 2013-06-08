@@ -101,6 +101,7 @@ CREATE TABLE move
 	game_state VARCHAR2(10) CHECK(game_state IN ('process', 'end')),
 	action VARCHAR2(14) CHECK(action IN ('start_game', 'terminate', 'go', 'take_treasure', 'shoot', 'drop_treasure', 'ask_prediction', 'exit')) NOT NULL,
 	action_direction VARCHAR2(10) CHECK(action_direction IN ('left', 'right', 'up', 'down')),
+	treasure_color NUMBER,
 	CONSTRAINT move_pk
 	    PRIMARY KEY (game_id, move_id),
 	CONSTRAINT game_id_fk

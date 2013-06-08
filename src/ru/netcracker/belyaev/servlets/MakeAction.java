@@ -26,29 +26,42 @@ public class MakeAction extends HttpServlet {
 			treasureColor = request.getParameter("color");
 		}
 		String newGameId = null;
+		System.out.println(action);
 
 		Routing routing = new Routing();
 		routing.setGameId(gameId);
 		
-		 if(action.equals("generate")) {
-			 	String gameXml = request.getParameter("gameXml");
-			 	if(gameXml != null) {
-			 		newGameId = routing.generate(gameXml);
-			 	}
+		if (action.equals("generate")) {
+			String gameXml = request.getParameter("gameXml");
+			if (gameXml != null) {
+				newGameId = routing.generate(gameXml);
+			}
 		} else {
 			routing.setGameId(gameId);
 			if(action.equals("go")) {
-				routing.go(uid, direction);
+				if (routing.go(uid, direction, (String) null)) {
+					routing.saveGameState();
+				}
 			} else if(action.equals("shoot")) {
-				routing.shoot(uid, direction);
+				if (routing.shoot(uid, direction, (String) null)) {
+					routing.saveGameState();
+				}
 			} else if(action.equals("pick-up")) {
-				routing.takeTreasure(uid, treasureColor);
+				if (routing.takeTreasure(uid, treasureColor, (String) null)) {
+					routing.saveGameState();
+				}
 			} else if(action.equals("drop")) {
-				routing.dropTreasure(uid);
+				if (routing.dropTreasure(uid, (String) null)) {
+					routing.saveGameState();
+				}
 			} else if(action.equals("predict")) {
-				routing.askPrediction(uid);
+				if (routing.askPrediction(uid, (String) null)) {
+					routing.saveGameState();
+				}
 			} else if(action.equals("exit")) {
-				routing.exit(uid);
+				if (routing.exit(uid, (String) null)) {
+					routing.saveGameState();
+				}
 			} else if(action.equals("draw")) {
 				routing.drawBoard();
 			} else if(action.equals("terminate")) {
@@ -57,6 +70,8 @@ public class MakeAction extends HttpServlet {
 				System.out.println("!!! some wrong command from client !!!");
 			}
 		}
+		
+		routing.dropGameState();
 		 
 		response.getWriter().close();
 		 

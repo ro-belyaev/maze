@@ -10,6 +10,10 @@
   	<servlet-name>MakeAction</servlet-name>
   	<servlet-class>ru.netcracker.belyaev.servlets.MakeAction</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>GetGameState</servlet-name>
+  	<servlet-class>ru.netcracker.belyaev.servlets.GetGameState</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>RegisterUser</servlet-name>
     <url-pattern>/RegisterUser</url-pattern>
@@ -17,5 +21,9 @@
   <servlet-mapping>
   	<servlet-name>MakeAction</servlet-name>
   	<url-pattern>/MakeAction</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>GetGameState</servlet-name>
+  	<url-pattern>/GetGameState</url-pattern>
   </servlet-mapping>
 </web-app>

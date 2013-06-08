@@ -80,8 +80,18 @@ public class Board {
 		this.isBoardCreated = true;
 		boardSnapshot = new BoardSnapshot(sizeX, sizeY, game);
 	}
-	public boolean restoreBoard() {
-		if(DatabaseManagerFactory.getDatabaseManagerInstance().restoreGameState(game)) {
+	public boolean restoreBoard(String ... moveId) {
+		boolean success = false;
+//		System.out.println("move id is");
+//		System.out.println(moveId[0]);
+		if (moveId[0] == null) {
+			success = DatabaseManagerFactory.getDatabaseManagerInstance()
+					.restoreLastGameState(game);
+		} else {
+			success = DatabaseManagerFactory.getDatabaseManagerInstance()
+					.restoreSpecificGameState(game, moveId[0]);
+		}
+		if (success) {
 			this.isBoardCreated = true;
 			boardSnapshot = new BoardSnapshot(sizeX, sizeY, game);
 			return true;

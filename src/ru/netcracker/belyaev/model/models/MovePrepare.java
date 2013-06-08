@@ -8,6 +8,7 @@ import ru.netcracker.belyaev.model.entities.Arch;
 import ru.netcracker.belyaev.model.entities.Exit;
 import ru.netcracker.belyaev.model.entities.Mage;
 import ru.netcracker.belyaev.model.entities.OnePointOnMap;
+import ru.netcracker.belyaev.model.entities.Player;
 import ru.netcracker.belyaev.model.entities.Treasure;
 
 public class MovePrepare {
@@ -23,6 +24,17 @@ public class MovePrepare {
 	}
 	public void setGame(Game game) {
 		this.game = game;
+	}
+	
+	public void checkCellOfCurrentPlayerBeforeMove() {
+		Player currentPlayer = game.getCurrentPlayer();
+		System.out.println("in check " + currentPlayer.getUID());
+		informer.setCurrentPlayerName(currentPlayer.getName());
+		OnePointOnMap playerPosition = currentPlayer.getPosition();
+		checkTreasureOnThisPoint(playerPosition);
+		checkMageOnThisPoint(playerPosition);
+		checkArchOnThisPoint(playerPosition);
+		checkExitOnThisPoint(playerPosition);
 	}
 	
 	public void checkMageOnThisPoint(OnePointOnMap point) {

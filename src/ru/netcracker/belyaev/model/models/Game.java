@@ -13,6 +13,7 @@ public class Game {
 	private InformerModel informer;
 	private MovePrepare move;
 	private Board board;
+	private int previousPlayerId = -1;
 	private int currentPlayerID;
 	private PlayerActions lastPlayerAction;
 	private Direction directionOfLastPlayerAction;
@@ -76,13 +77,10 @@ public class Game {
 //			}
 			// maybe it's better to register game here (if firstMove)
 
+//			it's not necessary
 			Player player = getCurrentPlayer();
 			OnePointOnMap playerPosition = player.getPosition();
 			messenger.informAboutAction(GameCases.CURRENT_PLAYER_INFORMATION, playerPosition, player);
-			move.checkTreasureOnThisPoint(playerPosition);
-			move.checkMageOnThisPoint(playerPosition);
-			move.checkArchOnThisPoint(playerPosition);
-			move.checkExitOnThisPoint(playerPosition);
 		}
 	}
 	
@@ -97,6 +95,7 @@ public class Game {
 		if(isGameOver()) {
 			return;
 		}
+		this.previousPlayerId = this.currentPlayerID;
 		boolean nextPlayerNotFound = true;
 		while(nextPlayerNotFound) {
 			this.currentPlayerID++;
@@ -111,6 +110,9 @@ public class Game {
 	
 	public int getCurrentPlayerID() {
 		return this.currentPlayerID;
+	}
+	public int getPreviousPlayerId() {
+		return this.previousPlayerId;
 	}
 	
 	public Player getCurrentPlayer() {

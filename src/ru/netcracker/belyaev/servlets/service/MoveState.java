@@ -13,33 +13,22 @@ import ru.netcracker.belyaev.model.models.InformerModel.PrepareInformer;
 import ru.netcracker.belyaev.model.models.InformerModel.ResultInformer;
 
 
-public class MoveInGame {
-	private int playerId;
-	private MoveInformation moveInformation;
+public class MoveState {
+	private String playerId;
+	private String moveId;
+	private List<String> moveInformation;
 	
-	public MoveInGame(InformerModel informer, int playerId) {
+	public MoveState(InformerModel informer, String playerId, String moveId) {
 		this.playerId = playerId;
-		moveInformation = new MoveInformation();
-		gatherInfoAboutPrepareCases(informer, moveInformation);
-		gatherInfoAboutPlayerActions(informer, moveInformation);
-		gatherInfoAboutPlayerActionResults(informer, moveInformation);
+		this.moveId = moveId;
+		moveInformation = new ArrayList<>();
+		gatherInfoAboutPrepareCases(informer);
+		gatherInfoAboutPlayerActions(informer);
+		gatherInfoAboutPlayerActionResults(informer);
 	}
 	
 	
-	public class MoveInformation {
-		private List<String> someMoveInformation;
-		public MoveInformation() {
-			someMoveInformation = new ArrayList<>();
-		}
-		public List<String> getSomeMoveInformation() {
-			return this.someMoveInformation;
-		}
-		public void addSomeMoveInformation(String info) {
-			someMoveInformation.add(info);
-		}
-	}
-	
-	private void gatherInfoAboutPrepareCases(InformerModel informer, MoveInformation moveInfo) {
+	private void gatherInfoAboutPrepareCases(InformerModel informer) {
 		String currentPlayerName = informer.getCurrentPlayerName();
 		for (PrepareInformer prepareInfo : informer.getPrepareInformer()) {
 			GameCases gameCase = prepareInfo.getGameCase();
@@ -62,11 +51,11 @@ public class MoveInGame {
 //					log about error
 					break;
 			}
-			moveInfo.addSomeMoveInformation(prepareString);
+			this.moveInformation.add(prepareString);
 		}
 	}
 	
-	private void gatherInfoAboutPlayerActions(InformerModel informer, MoveInformation moveInfo) {
+	private void gatherInfoAboutPlayerActions(InformerModel informer) {
 		String currentPlayerName = informer.getCurrentPlayerName();
 		for (ActionInformer actionInfo : informer.getActionInformer()) {
 			PlayerActions action = actionInfo.getPlayerAction();
@@ -95,11 +84,11 @@ public class MoveInGame {
 					actionString = currentPlayerName + " asks prediction from mage";
 					break;
 			}
-			moveInfo.addSomeMoveInformation(actionString);
+			this.moveInformation.add(actionString);
 		}
 	}
 	
-	private void gatherInfoAboutPlayerActionResults(InformerModel informer, MoveInformation moveInfo) {
+	private void gatherInfoAboutPlayerActionResults(InformerModel informer) {
 		String currentPlayerName = informer.getCurrentPlayerName();
 		for (ResultInformer resultInfo : informer.getResultInformer()) {
 			GameCases result = resultInfo.getGameCase();
@@ -135,7 +124,7 @@ public class MoveInGame {
 				default:
 					break;
 			}
-			moveInfo.addSomeMoveInformation(resultString);
+			this.moveInformation.add(resultString);
 		}
 	}
 	

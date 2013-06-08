@@ -61,7 +61,24 @@ $(function() {
                         alert('ajax request is failed');
                     });
             }
-        } else if(targetId == 'draw' || targetId == 'generate' || targetId == 'stop') {
+        } else if (targetId == 'predict' || targetId == 'drop') {
+        	$.ajax({
+        		type: 'GET',
+        		data: {
+        			uid: $('#user-id').val(),
+        			action: targetId,
+        			gameId: $('#game-id').val()
+        		},
+        		url: 'MakeAction'
+        	})
+        		.fail(function() {
+        			alert('ajax request for prediction or drop treasure is failed');
+        		});
+        } else if (targetId == 'pick-up') {
+        	$('#colors')
+    			.fadeIn("slow")
+    			.css('display', 'inline-block');
+        } else if (targetId == 'draw' || targetId == 'generate' || targetId == 'stop') {
             $.ajax({
                 type: 'GET',
                 data: {
@@ -75,6 +92,24 @@ $(function() {
                 });
         }
     });
+    
+    $('#colors').on('click', function() {
+    	$(this).css('display', 'none');
+    	$.ajax({
+    		type: 'GET',
+    		data: {
+    			uid: $('#user-id').val(),
+    			action: 'pick-up',
+    			color: $(event.target).attr('id'),
+    			gameId: $('#game-id').val()
+    		},
+    		url: 'MakeAction'
+    	})
+    		.fail(function() {
+    			alert('fail when send ajax request to pick-up a treasure');
+    		});
+    });
+    
 });
 
 //-->

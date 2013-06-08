@@ -7,7 +7,7 @@ import ru.netcracker.belyaev.enums.Direction;
 public class MainModel {
 	private Game game = new Game();
 	private MessengerModel messenger = new MessengerModel();
-	private InformerModel informer = new InformerModel(this.game.getCurrentPlayer().getName());
+	private InformerModel informer = new InformerModel();
 	private ShootModel weapon = new ShootModel();
 	private MovementModel movement = new MovementModel();
 	private BoardModel board = new BoardModel();
@@ -55,13 +55,14 @@ public class MainModel {
 		DatabaseManagerFactory.getDatabaseManagerInstance().saveGameState(this.game);
 	}
 	
-	public boolean moveShouldBeContinued(int uid) {
+	public boolean moveShouldBeContinued(int uid, String ... moveId) {
 //		load state here
-		if(game.getBoard().restoreBoard()) {
-			if(!game.checkCouldPlayerMakeMove(uid)) {
-				return false;
-			} else {
+		if(game.getBoard().restoreBoard(moveId)) {
+			if(game.checkCouldPlayerMakeMove(uid)) {
+				this.informer.setCurrentPlayerName(this.game.getCurrentPlayer().getName());
 				return true;
+			} else {
+				return false;
 			}
 		} else {
 //			game isn't started or is terminated
@@ -69,64 +70,56 @@ public class MainModel {
 		}
 	}
 	
-
+	public void checkCellOfCurrentPlayerBeforeMove() {
+		move.checkCellOfCurrentPlayerBeforeMove();
+	}
 	
-	public void go(int uid, Direction direction) {
-		if(moveShouldBeContinued(uid)) {
+	public boolean go(int uid, Direction direction, String ... moveId) {
+		if(moveShouldBeContinued(uid, moveId)) {
 			movement.go(direction);
-			saveGameState();
+			return true;
 		}
-		dropGameState();
+		return false;
 	}
 		
-	public void upTreasure(int uid, int colorID) {
-		if(moveShouldBeContinued(uid)) {
-			if(treasure.upTreasure(colorID)) {
-				saveGameState();
-			}
+	public boolean upTreasure(int uid, int colorID, String ... moveId) {
+		if(moveShouldBeContinued(uid, moveId)) {
+			return treasure.upTreasure(colorID);
 		}
-		dropGameState();
+		return false;
 	}
 	
-	public void dropTreasure(int uid) {
-		if(moveShouldBeContinued(uid)) {
-			if(treasure.dropTreasure()) {
-				saveGameState();
-			}
+	public boolean dropTreasure(int uid, String ... moveId) {
+		if(moveShouldBeContinued(uid, moveId)) {
+			return treasure.dropTreasure();
 		}
-		dropGameState();
+		return false;
 	}
 	
-	public void askPrediction(int uid) {
-		if(moveShouldBeContinued(uid)) {
-			if(mage.askPrediction()) {
-				saveGameState();
-			}
+	public boolean askPrediction(int uid, String ... moveId) {
+		if(moveShouldBeContinued(uid, moveId)) {
+			return mage.askPrediction();
 		}
-		dropGameState();
+		return false;
 	}
 	
-	public void exit(int uid) {
-		if(moveShouldBeContinued(uid)) {
-			if(exit.exit()) {
-				saveGameState();
-			}
+	public boolean exit(int uid, String ... moveId) {
+		if(moveShouldBeContinued(uid, moveId)) {
+			return exit.exit();
 		}
-		dropGameState();
+		return false;
 	}
 	
-	public void shoot(int uid, Direction direction) {
-		if(moveShouldBeContinued(uid)) {
-			if(weapon.shoot(direction)) {
-				saveGameState();
-			}
+	public boolean shoot(int uid, Direction direction, String ... moveId) {
+		if(moveShouldBeContinued(uid, moveId)) {
+			return weapon.shoot(direction);
 		}
-		dropGameState();
+		return false;
 	}
 	
 	public OneCellOnBoard[][] getBoardSnapshot() {
 //		load state here
-//		drop game state in controller
+//		drop game state in controller ???
 		if(game.getBoard().restoreBoard()) {
 			return board.getBoardSnapshot();
 		} else {
@@ -137,7 +130,7 @@ public class MainModel {
 	public String generateBoard(String gameXml) {
 		board.generateBoard(gameXml);
 		String gameId = DatabaseManagerFactory.getDatabaseManagerInstance().registerGame(game);
-		dropGameState();
+//		dropGameState();
 		return gameId;
 	}
 	
@@ -148,7 +141,11 @@ public class MainModel {
 			game.terminateGame();
 			DatabaseManagerFactory.getDatabaseManagerInstance().terminateGame(game);
 		}
-		dropGameState();
+//		dropGameState();
+	}
+	
+	public void restoreBoard(String moveId) {
+		game.getBoard().restoreBoard(moveId);
 	}
 	
 	public void setGameId(String gameId) {
@@ -157,5 +154,9 @@ public class MainModel {
 	
 	public InformerModel getInformer() {
 		return this.informer;
+	}
+	
+	public void clearInformer() {
+		this.informer.clear();
 	}
 }

@@ -50,6 +50,8 @@ public class Wall implements PortalEntity {
 			return false;
 		} else {
 			Direction direction = ru.netcracker.belyaev.enums.Direction.recognizeDirection(firstPoint, lastPoint);
+//			System.out.println(firstPoint.getX() + " " + firstPoint.getY() + " " + 
+//					lastPoint.getX() + " " + lastPoint.getY());
 			OnePointOnMap somePoint = firstPoint;
 			do {
 				OnePointOnMap nextPoint = somePoint.nextPoint(direction);

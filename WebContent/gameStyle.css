@@ -1,0 +1,31 @@
+#colors {
+	display: none;
+	position: relative;
+}
+.color {
+	height: 25px;
+	width: 25px;
+	display: inline-block;
+	position: relative;
+	vertical-align: middle;
+	margin-left: 2px;
+	cursor: pointer;
+}
+div.green {
+	background: green;
+}
+div.yellow {
+	background: yellow;
+}
+div.red {
+	background: red;
+}
+div.blue {
+	background: blue;
+}
+div.orange {
+	background: orange;
+}
+div.violet {
+	background: violet;
+}

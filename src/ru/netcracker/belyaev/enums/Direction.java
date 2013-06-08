@@ -9,16 +9,16 @@ public enum Direction {
 	DOWN;
 	
 	public static Direction recognizeDirection(OnePointOnMap startPoint, OnePointOnMap endPoint) {
-		if(endPoint.getX() == startPoint.getX() - 1 && endPoint.getY() == startPoint.getY()) {
+		if(endPoint.getX() < startPoint.getX() && endPoint.getY() == startPoint.getY()) {
 			return Direction.LEFT;
 		}
-		else if(endPoint.getX() == startPoint.getX() + 1 && endPoint.getY() == startPoint.getY()) {
+		else if(endPoint.getX() > startPoint.getX() && endPoint.getY() == startPoint.getY()) {
 			return Direction.RIGHT;
 		}
-		else if(endPoint.getY() == startPoint.getY() - 1 && endPoint.getX() == startPoint.getX()) {
+		else if(endPoint.getY() < startPoint.getY() && endPoint.getX() == startPoint.getX()) {
 			return Direction.DOWN;
 		}
-		else if(endPoint.getY() == startPoint.getY() + 1 && endPoint.getX() == startPoint.getX()) {
+		else if(endPoint.getY() > startPoint.getY() && endPoint.getX() == startPoint.getX()) {
 			return Direction.UP;
 		}
 		else {

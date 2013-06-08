@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="gameStyle.css">
 <link href='./bootstrap/css/bootstrap.css' rel='stylesheet' type='text/css'>
 <script type="text/javascript">
 	<%@ include file='./jquery-1.9.1.min.js' %>
@@ -27,10 +28,19 @@
             <button id="up" type="button" class="btn"><i class="icon-arrow-up"></i></button>
             <button id="down" type="button" class="btn"><i class="icon-arrow-down"></i></button>
         </div>
-
-
+        
         <button id="drop" type="button" class="btn"><i class="icon-minus"></i></button>
         <button id="pick-up" type="button" class="btn"><i class="icon-plus"></i></button>
+        
+        <div id="colors">
+        	<div id="green" class="color green"></div>
+        	<div id="red" class="color red"></div>
+        	<div id="yellow" class="color yellow"></div>
+        	<div id="blue" class="color blue"></div>
+        	<div id="orange" class="color orange"></div>
+        	<div id="violet" class="color violet"></div>
+        </div>
+        
         <button id="predict" type="button" class="btn"><i class="icon-question-sign"></i></button>
         <button id="exit" type="button" class="btn"><i class="icon-off"></i></button>
 

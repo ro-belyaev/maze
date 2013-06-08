@@ -14,15 +14,23 @@ public class InformerModel {
 	private List <ResultInformer> resultInformer;
 	private String currentPlayerName;
 	
-	public InformerModel(String playerName) {
+	public InformerModel() {
 		prepareInformer = new ArrayList<>();
 		actionInformer = new ArrayList<>();
 		resultInformer = new ArrayList<>();
-		this.currentPlayerName = playerName;
+	}
+	
+	public void clear() {
+		this.prepareInformer.clear();
+		this.actionInformer.clear();
+		this.resultInformer.clear();
 	}
 	
 	public String getCurrentPlayerName() {
 		return this.currentPlayerName;
+	}
+	public void setCurrentPlayerName(String playerName) {
+		this.currentPlayerName = playerName;
 	}
 	
 	public List<PrepareInformer> getPrepareInformer() {

@@ -41,7 +41,11 @@ public class Routing {
 		}
 		return true;
 	}
-	public void go(String uid, String dir) {
+	
+	public void checkCellOfCurrentPlayerBeforeMove() {
+		controller.checkCellOfCurrentPlayerBeforeMove();
+	}
+	public boolean go(String uid, String dir, String ... moveId) {
 		Direction direction = Direction.recognizeDirection(dir);
 		if(direction == null) {
 			System.out.println("wrong second parameter");
@@ -49,13 +53,14 @@ public class Routing {
 		else {
 			try {
 				int id = Integer.parseInt(uid);
-				controller.go(id, direction);
+				return controller.go(id, direction, moveId);
 			} catch(NumberFormatException e) {
 				System.out.println("Argument " + uid + " must be an integer!");
 			}
 		}
+		return false;
 	}
-	public void takeTreasure(String uid, String treasureColor) {
+	public boolean takeTreasure(String uid, String treasureColor, String ... moveId) {
 		try {
 			int userID = Integer.parseInt(uid);
 			int treasureColorID = Colors.recognizeColorID(treasureColor);
@@ -64,29 +69,32 @@ public class Routing {
 				System.out.println("Should be one of: " + Arrays.toString(Colors.values()));
 			}
 			else {
-				controller.upTreasure(userID, treasureColorID);
+				return controller.upTreasure(userID, treasureColorID, moveId);
 			}
 		} catch(NumberFormatException e) {
 			System.out.println("Arguments " + uid + " must be an integer!");
 		}
+		return false;
 	}
-	public void dropTreasure(String uid) {
+	public boolean dropTreasure(String uid, String ... moveId) {
 		try {
 			int userID = Integer.parseInt(uid);
-			controller.dropTreasure(userID);
+			return controller.dropTreasure(userID, moveId);
 		} catch(NumberFormatException e) {
 			System.out.println("Argument " + uid + " must be an integer!");
 		}
+		return false;
 	}
-	public void askPrediction(String uid) {
+	public boolean askPrediction(String uid, String ... moveId) {
 		try {
 			int userID = Integer.parseInt(uid);
-			controller.askPrediction(userID);
+			return controller.askPrediction(userID, moveId);
 		} catch(NumberFormatException e) {
 			System.out.println("Argument " + uid + " must be an integer!");
 		}
+		return false;
 	}
-	public void shoot(String uid, String dir) {
+	public boolean shoot(String uid, String dir, String ... moveId) {
 		Direction direction = Direction.recognizeDirection(dir);
 		if(direction == null) {
 			System.out.println("wrong second parameter");
@@ -94,22 +102,33 @@ public class Routing {
 		else {
 			try {
 				int id = Integer.parseInt(uid);
-				controller.shoot(id, direction);
+				return controller.shoot(id, direction, moveId);
 			} catch(NumberFormatException e) {
 				System.out.println("Argument " + uid + " must be an integer!");
 			}
 		}
+		return false;
 	}
-	public void exit(String uid) {
+	public boolean exit(String uid, String ... moveId) {
 		try {
 			int userID = Integer.parseInt(uid);
-			controller.exit(userID);
+			return controller.exit(userID, moveId);
 		} catch(NumberFormatException e) {
 			System.out.println("Argument " + uid + " must be an integer!");
 		}
+		return false;
+	}
+	public void saveGameState() {
+		model.saveGameState();
+	}
+	public void dropGameState() {
+		model.dropGameState();
 	}
 	public InformerModel getInformer() {
 		return controller.getInformer();
+	}
+	public void clearInformer() {
+		controller.clearInformer();
 	}
 	public void drawBoard() {
 		controller.getBoardSnapshot();
@@ -120,6 +139,9 @@ public class Routing {
 	}
 	public void terminate() {
 		controller.terminate();
+	}
+	public void restoreBoard(String moveId) {
+		controller.restoreBoard(moveId);
 	}
 	
 	public void route(String gameId) {
@@ -185,7 +207,7 @@ public class Routing {
 	}
 	
 	public static void main(String[] argv) {
-		Routing routing = new Routing();
+//		Routing routing = new Routing();
 //		String gameId = routing.generate();
 //		routing.route(gameId);
 	}

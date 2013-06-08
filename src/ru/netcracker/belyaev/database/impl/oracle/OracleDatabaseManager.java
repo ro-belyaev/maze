@@ -32,12 +32,12 @@ public class OracleDatabaseManager implements DatabaseManager {
 		OracleTreasureManager.saveTreasures(conn, treasures, this.gameId, this.moveId);
 	}
 
-	@Override
+//	@Override
 	public boolean restoreGameState(Game game) {
 		OracleConnection conn = new OracleConnection();
 		this.gameId = game.getGameId();
 		if(OracleGameStateManager.gameWasStarted(conn, this.gameId)) {
-			this.moveId = OracleServiceFunctionality.getLastMoveId(conn, this.gameId);
+//			this.moveId = OracleServiceFunctionality.getLastMoveId(conn, this.gameId);
 			if(!OracleGameStateManager.gameWasTerminated(conn, game, this.gameId, this.moveId)) {
 				OracleGameStateManager.restoreGameState(conn, game, this.gameId, this.moveId);
 				OracleTreasureManager.restoreTreasures(conn, game, this.gameId, this.moveId);
@@ -53,6 +53,20 @@ public class OracleDatabaseManager implements DatabaseManager {
 		}
 		return false;
 	}
+	
+	@Override
+	public boolean restoreLastGameState(Game game) {
+		OracleConnection conn = new OracleConnection();
+		this.moveId = OracleServiceFunctionality.getLastMoveId(conn, game.getGameId());
+		return restoreGameState(game);
+	}
+
+	@Override
+	public boolean restoreSpecificGameState(Game game, String moveId) {
+		this.moveId = moveId;
+		return restoreGameState(game);
+	}
+	
 
 	@Override
 	public String registerGame(Game game) {
@@ -116,15 +130,22 @@ public class OracleDatabaseManager implements DatabaseManager {
 		this.gameId = gameId;
 		int firstMoveId = Integer.parseInt(startMoveId);
 		OracleConnection conn = new OracleConnection();
-		int lastMoveId = Integer.parseInt(OracleServiceFunctionality.getLastMoveId(conn, this.gameId));
+		int lastMoveId = Integer.parseInt(OracleServiceFunctionality
+				.getLastMoveId(conn, this.gameId));
 		List<OneMove> moves = new ArrayList<>();
-		for (int i = firstMoveId; i < lastMoveId; i++) {
-			String curPlayerId = OracleServiceFunctionality.getNextPlayerIdByMoveId(conn,
-					this.gameId, String.valueOf(i));
-			String[] info = OracleServiceFunctionality.getMoveInformationByMoveId(conn, this.gameId, String.valueOf(i+1));
+		for (int i = firstMoveId; i <= lastMoveId; i++) {
+			String curMoveId = String.valueOf(i);
+			System.out.println("cur moveId is " + curMoveId);
+			String curPlayerId = OracleServiceFunctionality
+					.getCurrentPlayerIdByMoveId(conn, this.gameId, curMoveId);
+			String[] info = OracleServiceFunctionality
+					.getMoveInformationByMoveId(conn, this.gameId, curMoveId);
 			String action = info[0];
 			String dir = info[1];
-			OneMove oneMove = new OneMove(curPlayerId, action, dir);
+			String nextPlayerId = info[2];
+			String treasureColor = info[3];
+			OneMove oneMove = new OneMove(curPlayerId, nextPlayerId, curMoveId,
+					action, dir, treasureColor);
 			moves.add(oneMove);
 		}
 		return moves;
@@ -143,6 +164,7 @@ public class OracleDatabaseManager implements DatabaseManager {
 		}
 		return playersInfo;
 	}
+
 	
 //	public String getGameId() {
 //		return this.gameId;
